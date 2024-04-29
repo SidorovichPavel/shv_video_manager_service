@@ -5,6 +5,8 @@
 #include <userver/testsuite/testsuite_support.hpp>
 #include <userver/utils/daemon_run.hpp>
 
+#include "components/http/options/fwd.hpp"
+#include "components/http/post/uploader/fwd.hpp"
 #include "hello.hpp"
 
 int main(int argc, char* argv[]) {
@@ -15,6 +17,8 @@ int main(int argc, char* argv[]) {
                             .Append<userver::server::handlers::TestsControl>();
 
   svh_video_service::AppendHello(component_list);
+  svh::video::components::http::post::uploader::Append(component_list);
+  svh::video::components::http::options::Append(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }
