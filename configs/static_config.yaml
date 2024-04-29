@@ -60,6 +60,12 @@ components_manager:
             path: /api/upload
             method: POST
             task_processor: main-task-processor
+            max_request_size: 26214400
+
+        options-handler:
+            path: /api/upload
+            method: OPTIONS
+            task_processor: main-task-processor
 
         postgres-db-1:
             dbconnection: $dbconnection
