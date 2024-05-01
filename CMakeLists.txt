@@ -33,10 +33,15 @@ target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 # Common components
 add_library(${PROJECT_NAME}_comps_objs OBJECT
 
-    # uploader
-    src/components/http/post/uploader/VideoUploader.hpp
-    src/components/http/post/uploader/VideoUploader.cpp
-    src/components/http/post/uploader/fwd.hpp
+    # file conroller
+    src/components/upload/Uploader.hpp
+    src/components/upload/Uploader.cpp
+    src/components/upload/fwd.hpp
+
+    # video uploader
+    src/components/http/post/upload/UploadHandler.hpp
+    src/components/http/post/upload/UploadHandler.cpp
+    src/components/http/post/upload/fwd.hpp
 
     # options
     src/components/http/options/OptionsHandler.hpp
@@ -44,11 +49,25 @@ add_library(${PROJECT_NAME}_comps_objs OBJECT
     src/components/http/options/fwd.hpp
 )
 target_link_libraries(${PROJECT_NAME}_comps_objs PUBLIC userver::postgresql)
+target_include_directories(${PROJECT_NAME}_comps_objs PRIVATE src/logic)
+
+add_library(${PROJECT_NAME}_log_objs OBJECT
+    src/logic/uploader/controller/UploadController.hpp
+    src/logic/uploader/controller/UploadController.cpp
+    src/logic/uploader/controller/ExpirationFileBuilder.hpp
+    src/logic/uploader/controller/ExpirationFileBuilder.cpp
+    src/logic/uploader/controller/builder/FileBuilder.hpp
+    src/logic/uploader/controller/builder/FileBuilder.cpp
+    src/logic/uploader/controller/expiration/ExpirationController.hpp
+    src/logic/uploader/controller/expiration/ExpirationController.cpp
+)
+target_link_libraries(${PROJECT_NAME}_log_objs PUBLIC userver::core)
 
 # The Service
 add_executable(${PROJECT_NAME} src/main.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_objs)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_comps_objs)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_objs)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_comps_objs)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_log_objs)
 
 # Unit Tests
 add_executable(${PROJECT_NAME}_unittest
