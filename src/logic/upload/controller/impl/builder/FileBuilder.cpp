@@ -4,7 +4,7 @@
 #include <cassert>
 #include <fstream>
 
-namespace svh::video::logic::upload::controller::builder {
+namespace svh::video::logic::upload::controller::impl::builder {
 
 const std::string k_default_tmp_dir = "/tmp";
 
@@ -81,4 +81,4 @@ bool operator<(const FileBuilder& rsh, const FileBuilder& lsh) {
   return rsh.file_name_ < lsh.file_name_;
 }
 
-}  // namespace svh::video::logic::uploader::controller::builder
+}  // namespace svh::video::logic::upload::controller::impl::builder

@@ -1,17 +1,18 @@
 #pragma once
 
-#include "ExpirationFileBuilder.hpp"
-
-#include <map>
-#include <memory>
-#include <queue>
-#include <set>
+#include <cstdint>
 #include <string>
+#include <string_view>
 
-#include <userver/concurrent/variable.hpp>
-#include <userver/engine/shared_mutex.hpp>
+#include <userver/compiler/select.hpp>
+#include <userver/engine/task/task_processor_fwd.hpp>
+#include <userver/utils/fast_pimpl.hpp>
 
 namespace svh::video::logic::upload::controller {
+
+namespace impl {
+class UploadControllerImpl;
+}
 
 class UploadController {
  public:
@@ -22,23 +23,10 @@ class UploadController {
                   std::string_view value);
 
  private:
-  ExpirationFileBuilder* get_file_builder(std::string uid,
-                                          std::string file_name,
-                                          std::size_t total_blocks);
+  static constexpr std::size_t kImplSize =
+      userver::compiler::SelectSize().For64Bit(496).For32Bit(4);
 
-  std::optional<std::string> ttry_find_b64_cache(std::string_view str);
-
-  void update_b64_cache(std::string_view str);
-
-  userver::engine::TaskProcessor& task_processor_;
-  userver::concurrent::Variable<std::map<std::string, std::string>,
-                                userver::engine::SharedMutex>
-      base64_cache_;
-
-  userver::concurrent::Variable<
-      std::map<std::string, std::unique_ptr<ExpirationFileBuilder>>,
-      userver::engine::Mutex>
-      builders_;
+  userver::utils::FastPimpl<impl::UploadControllerImpl, kImplSize, 8> impl_;
 };
 
-}  // namespace svh::video::logic::uploader::controller
+}  // namespace svh::video::logic::upload::controller

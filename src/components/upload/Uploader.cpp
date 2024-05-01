@@ -1,6 +1,7 @@
 #include "Uploader.hpp"
 #include "fwd.hpp"
 
+#include <upload/controller/impl/UploadControllerImpl.hpp>
 #include <userver/utils/async.hpp>
 #include <userver/yaml_config/merge_schemas.hpp>
 

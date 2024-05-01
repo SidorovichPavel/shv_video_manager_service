@@ -3,7 +3,7 @@
 #include <atomic>
 #include <chrono>
 
-namespace svh::video::logic::upload::controller::expiration {
+namespace svh::video::logic::upload::controller::impl::expiration {
 
 using namespace std::chrono_literals;
 using duration = std::chrono::system_clock::duration;
@@ -31,4 +31,4 @@ class ExpirationController {
   std::atomic<time_point> expiration_time_;
 };
 
-}  // namespace svh::video::logic::uploader::controller::expiration
+}  // namespace svh::video::logic::upload::controller::impl::expiration
