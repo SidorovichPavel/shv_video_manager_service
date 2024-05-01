@@ -1,6 +1,6 @@
 #include "ExpirationController.hpp"
 
-namespace svh::video::logic::uploader::controller::expiration {
+namespace svh::video::logic::upload::controller::expiration {
 
 ExpirationController::ExpirationController(
     std::chrono::system_clock::duration live_time) noexcept

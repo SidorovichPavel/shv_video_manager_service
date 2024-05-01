@@ -4,7 +4,7 @@
 #include <cassert>
 #include <fstream>
 
-namespace svh::video::logic::uploader::controller::builder {
+namespace svh::video::logic::upload::controller::builder {
 
 const std::string k_default_tmp_dir = "/tmp";
 

@@ -3,7 +3,7 @@
 #include <atomic>
 #include <chrono>
 
-namespace svh::video::logic::uploader::controller::expiration {
+namespace svh::video::logic::upload::controller::expiration {
 
 using namespace std::chrono_literals;
 using duration = std::chrono::system_clock::duration;

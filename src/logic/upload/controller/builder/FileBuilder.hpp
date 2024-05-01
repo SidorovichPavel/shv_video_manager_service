@@ -10,7 +10,7 @@
 #include <userver/crypto/hash.hpp>
 #include <userver/engine/shared_mutex.hpp>
 
-namespace svh::video::logic::uploader::controller::builder {
+namespace svh::video::logic::upload::controller::builder {
 
 extern const std::string k_default_tmp_dir;
 

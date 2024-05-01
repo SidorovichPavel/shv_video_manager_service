@@ -1,6 +1,6 @@
 #include "ExpirationFileBuilder.hpp"
 
-namespace svh::video::logic::uploader::controller {
+namespace svh::video::logic::upload::controller {
 
 ExpirationFileBuilder::ExpirationFileBuilder(std::string file_name,
                                              std::size_t total_blocks_number,

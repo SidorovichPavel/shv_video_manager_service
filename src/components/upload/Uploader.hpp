@@ -7,7 +7,7 @@
 #include <userver/server/component.hpp>
 #include <userver/yaml_config/yaml_config.hpp>
 
-#include "uploader/controller/UploadController.hpp"
+#include "upload/controller/UploadController.hpp"
 
 namespace svh::video::components::upload {
 class Uploader final : public userver::components::LoggableComponentBase {
@@ -17,14 +17,14 @@ class Uploader final : public userver::components::LoggableComponentBase {
   static userver::yaml_config::Schema GetStaticConfigSchema();
 
   Uploader(const userver::components::ComponentConfig& cfg,
-                const userver::components::ComponentContext& ctx);
+           const userver::components::ComponentContext& ctx);
 
-  std::shared_ptr<logic::uploader::controller::UploadController>
+  std::shared_ptr<logic::upload::controller::UploadController>
   GetUploadControllerPtr() const;
 
  private:
   userver::engine::TaskProcessor& fs_task_processor_;
-  std::shared_ptr<logic::uploader::controller::UploadController>
+  std::shared_ptr<logic::upload::controller::UploadController>
       upload_controller_ptr_;
 };
-}  // namespace svh::video::components::uploader
+}  // namespace svh::video::components::upload

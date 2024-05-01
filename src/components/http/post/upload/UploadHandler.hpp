@@ -3,7 +3,7 @@
 #include <userver/components/component.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
 
-#include <uploader/controller/UploadController.hpp>
+#include <upload/controller/UploadController.hpp>
 
 namespace svh::video::components::http::post::upload {
 
@@ -20,12 +20,12 @@ class UploadHandler final : public userver::server::handlers::HttpHandlerBase {
 
  private:
   void EnableCORS(const userver::server::http::HttpRequest& request) const;
-  
+
   std::string MakeBadRequestValue(
       const userver::server::http::HttpRequest& request,
       std::string message) const;
 
-  std::shared_ptr<logic::uploader::controller::UploadController>
+  std::shared_ptr<logic::upload::controller::UploadController>
       upload_controller_;
 };
 

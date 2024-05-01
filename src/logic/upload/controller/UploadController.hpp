@@ -11,7 +11,7 @@
 #include <userver/concurrent/variable.hpp>
 #include <userver/engine/shared_mutex.hpp>
 
-namespace svh::video::logic::uploader::controller {
+namespace svh::video::logic::upload::controller {
 
 class UploadController {
  public:

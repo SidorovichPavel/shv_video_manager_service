@@ -3,7 +3,7 @@
 #include "builder/FileBuilder.hpp"
 #include "expiration/ExpirationController.hpp"
 
-namespace svh::video::logic::uploader::controller {
+namespace svh::video::logic::upload::controller {
 
 class ExpirationFileBuilder {
   friend struct EFBComparator;

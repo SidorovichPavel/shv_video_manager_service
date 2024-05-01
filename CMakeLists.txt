@@ -52,14 +52,17 @@ target_link_libraries(${PROJECT_NAME}_comps_objs PUBLIC userver::postgresql)
 target_include_directories(${PROJECT_NAME}_comps_objs PRIVATE src/logic)
 
 add_library(${PROJECT_NAME}_log_objs OBJECT
-    src/logic/uploader/controller/UploadController.hpp
-    src/logic/uploader/controller/UploadController.cpp
-    src/logic/uploader/controller/ExpirationFileBuilder.hpp
-    src/logic/uploader/controller/ExpirationFileBuilder.cpp
-    src/logic/uploader/controller/builder/FileBuilder.hpp
-    src/logic/uploader/controller/builder/FileBuilder.cpp
-    src/logic/uploader/controller/expiration/ExpirationController.hpp
-    src/logic/uploader/controller/expiration/ExpirationController.cpp
+    src/logic/upload/controller/UploadController.hpp
+    src/logic/upload/controller/UploadController.cpp
+    src/logic/upload/controller/ExpirationFileBuilder.hpp
+    src/logic/upload/controller/ExpirationFileBuilder.cpp
+    src/logic/upload/controller/builder/FileBuilder.hpp
+    src/logic/upload/controller/builder/FileBuilder.cpp
+    src/logic/upload/controller/expiration/ExpirationController.hpp
+    src/logic/upload/controller/expiration/ExpirationController.cpp
+
+    src/logic/upload/controller/impl/UploadControllerBase.hpp
+    src/logic/upload/controller/impl/UploadControllerBase.cpp
 )
 target_link_libraries(${PROJECT_NAME}_log_objs PUBLIC userver::core)
 

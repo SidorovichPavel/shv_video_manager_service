@@ -1,6 +1,6 @@
 #include "UploadController.hpp"
 
-namespace svh::video::logic::uploader::controller {
+namespace svh::video::logic::upload::controller {
 
 UploadController::UploadController(
     userver::engine::TaskProcessor& fs_task_processor)
