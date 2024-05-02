@@ -21,7 +21,7 @@ class Uploader final : public userver::components::LoggableComponentBase {
 
   std::shared_ptr<logic::upload::controller::UploadController>
   GetUploadControllerPtr() const;
-  
+
  private:
   userver::engine::TaskProcessor& fs_task_processor_;
   std::shared_ptr<logic::upload::controller::UploadController>
