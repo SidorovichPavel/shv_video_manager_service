@@ -49,7 +49,7 @@ add_library(${PROJECT_NAME}_comps_objs OBJECT
     src/components/http/options/fwd.hpp
 )
 target_link_libraries(${PROJECT_NAME}_comps_objs PUBLIC userver::postgresql)
-target_include_directories(${PROJECT_NAME}_comps_objs PRIVATE src/logic)
+target_include_directories(${PROJECT_NAME}_comps_objs PRIVATE src/)
 
 add_library(${PROJECT_NAME}_log_objs OBJECT
     # interface

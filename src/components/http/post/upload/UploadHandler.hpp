@@ -3,7 +3,7 @@
 #include <userver/components/component.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
 
-#include <upload/controller/UploadController.hpp>
+#include <logic/upload/controller/UploadController.hpp>
 
 namespace svh::video::components::http::post::upload {
 
