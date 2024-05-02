@@ -10,7 +10,7 @@ class ExpirationFileBuilder {
 
  public:
   ExpirationFileBuilder(
-      std::string file_name, std::size_t total_blocks_number,
+      std::string file_name, std::size_t total_blocks,
       std::string workspace_dir = builder::k_default_build_dir,
       expiration::duration live_time = expiration::k_default_expiration_time);
 
@@ -29,9 +29,9 @@ class ExpirationFileBuilder {
 
   bool expired() const noexcept;
 
- private:
   void update() noexcept;
 
+ private:
   builder::FileBuilder file_builder_;
   expiration::ExpirationController expire_controller_;
 };

@@ -18,7 +18,6 @@ std::string ExpirationFileBuilder::get_name() const {
 void ExpirationFileBuilder::push_block(std::size_t idx,
                                        std::string_view value) {
   file_builder_.push_block(idx, value);
-  update();
 }
 
 void ExpirationFileBuilder::build(std::string dir) { file_builder_.build(dir); }

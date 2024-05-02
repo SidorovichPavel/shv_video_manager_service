@@ -24,9 +24,10 @@ class UploadController {
 
  private:
   static constexpr std::size_t kImplSize =
-      userver::compiler::SelectSize().For64Bit(496).For32Bit(4);
+      userver::compiler::SelectSize().For64Bit(848u).For32Bit(4u);
+  static constexpr std::size_t kImplAlignment = 16u;
 
-  userver::utils::FastPimpl<impl::UploadControllerImpl, kImplSize, 8> impl_;
+  userver::utils::FastPimpl<impl::UploadControllerImpl, kImplSize, 16> impl_;
 };
 
 }  // namespace svh::video::logic::upload::controller
