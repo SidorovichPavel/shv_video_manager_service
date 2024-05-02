@@ -19,7 +19,7 @@ class ExpirationFileBuilder {
   ExpirationFileBuilder& operator=(const ExpirationFileBuilder&) = delete;
   ExpirationFileBuilder& operator=(ExpirationFileBuilder&&) = delete;
 
-  bool is_ready();
+  bool is_ready() const;
 
   std::string get_name() const;
 

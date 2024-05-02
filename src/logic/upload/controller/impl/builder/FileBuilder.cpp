@@ -18,7 +18,7 @@ FileBuilder::FileBuilder(std::string file_name, std::size_t total_blocks_number,
     throw std::logic_error("workspace directory not exists");
 }
 
-bool FileBuilder::is_ready() {
+bool FileBuilder::is_ready() const {
   auto hashes_lock = blocks_hashes_.SharedLock();
   auto count_received_blocks =
       std::count_if(hashes_lock->begin(), hashes_lock->begin(),

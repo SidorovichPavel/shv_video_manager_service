@@ -20,7 +20,7 @@ class FileBuilder {
               std::string workspace_dir = k_default_build_dir);
 
   // check what all blocks received
-  bool is_ready();
+  bool is_ready() const;
   // save block of data
 
   std::string get_name() const;
@@ -33,7 +33,7 @@ class FileBuilder {
  private:
   // return new sha256 sum if block not exist or was updated
   std::optional<std::string> get_hash_if_need_write(std::size_t idx,
-                                          std::string_view value);
+                                                    std::string_view value);
 
   void write_block(std::size_t idx, std::string_view value);
 
