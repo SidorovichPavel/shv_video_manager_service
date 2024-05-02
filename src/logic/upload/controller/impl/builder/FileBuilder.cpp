@@ -23,17 +23,16 @@ bool FileBuilder::is_ready() {
   auto count_received_blocks =
       std::count_if(hashes_lock->begin(), hashes_lock->begin(),
                     [](const auto& hash) { return !hash.empty(); });
-  return static_cast<std::size_t>(count_received_blocks) ==
-         total_blocks_;
+  return static_cast<std::size_t>(count_received_blocks) == total_blocks_;
 }
 
 std::string FileBuilder::get_name() const { return file_name_; }
 
 void FileBuilder::push_block(std::size_t idx, std::string_view value) {
-  auto block_hash = exists_block(idx, value);
+  auto block_hash = get_hash_if_need_write(idx, value);
   if (!block_hash) return;
 
-  save_block(idx, value);
+  write_block(idx, value);
 
   update_block_hash(idx, std::move(*block_hash));
 }
@@ -42,8 +41,8 @@ void FileBuilder::build(std::string path) {
   // TODO: make one file from parts
 }
 
-std::optional<std::string> FileBuilder::exists_block(std::size_t idx,
-                                                     std::string_view value) {
+std::optional<std::string> FileBuilder::get_hash_if_need_write(
+    std::size_t idx, std::string_view value) {
   // check, that idx in range [1, total block number]
   assert((idx >= 1u) && (idx <= total_blocks_));
 
@@ -59,7 +58,7 @@ std::optional<std::string> FileBuilder::exists_block(std::size_t idx,
     return std::nullopt;
 }
 
-void FileBuilder::save_block(std::size_t idx, std::string_view value) {
+void FileBuilder::write_block(std::size_t idx, std::string_view value) {
   auto block_name = file_name_ + std::to_string(idx);
   std::filesystem::path file_block_path = workspace_direction_ / block_name;
 

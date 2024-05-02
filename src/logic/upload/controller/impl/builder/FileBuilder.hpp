@@ -34,10 +34,10 @@ class FileBuilder {
 
  private:
   // return new sha256 sum if block not exist or was updated
-  std::optional<std::string> exists_block(std::size_t idx,
+  std::optional<std::string> get_hash_if_need_write(std::size_t idx,
                                           std::string_view value);
 
-  void save_block(std::size_t idx, std::string_view value);
+  void write_block(std::size_t idx, std::string_view value);
 
   void update_block_hash(std::size_t idx, std::string hash);
 
