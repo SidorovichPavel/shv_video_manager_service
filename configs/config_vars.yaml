@@ -4,6 +4,6 @@ logger-level: info
 
 is-testing: false
 
-server-port: 8080
+server-port: 8090
 
 dbconnection: 'postgresql://svh_video_service_user:password@localhost:5432/svh_video_service_db_1'
