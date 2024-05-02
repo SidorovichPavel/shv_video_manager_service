@@ -9,7 +9,9 @@ ExpirationFileBuilder::ExpirationFileBuilder(std::string file_name,
     : file_builder_(file_name, total_blocks_number, workspace_dir),
       expire_controller_(live_time) {}
 
-bool ExpirationFileBuilder::is_ready() const { return file_builder_.is_ready(); }
+bool ExpirationFileBuilder::is_ready() const {
+  return file_builder_.is_ready();
+}
 
 std::string ExpirationFileBuilder::get_name() const {
   return file_builder_.get_name();
