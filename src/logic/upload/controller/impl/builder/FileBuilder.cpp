@@ -6,13 +6,13 @@
 
 namespace svh::video::logic::upload::controller::impl::builder {
 
-const std::string k_default_tmp_dir = "/tmp";
+const std::string k_default_build_dir = "/tmp";
 
 FileBuilder::FileBuilder(std::string file_name, std::size_t total_blocks_number,
                          std::string workspace_dir)
     : workspace_direction_(std::move(workspace_dir)),
       blocks_hashes_(total_blocks_number, std::string()),
-      total_blocks_number_(total_blocks_number),
+      total_blocks_(total_blocks_number),
       file_name_(std::move(file_name)) {
   if (!std::filesystem::exists(workspace_direction_))
     throw std::logic_error("workspace directory not exists");
@@ -24,7 +24,7 @@ bool FileBuilder::is_ready() {
       std::count_if(hashes_lock->begin(), hashes_lock->begin(),
                     [](const auto& hash) { return !hash.empty(); });
   return static_cast<std::size_t>(count_received_blocks) ==
-         total_blocks_number_;
+         total_blocks_;
 }
 
 std::string FileBuilder::get_name() const { return file_name_; }
@@ -45,12 +45,12 @@ void FileBuilder::build(std::string path) {
 std::optional<std::string> FileBuilder::exists_block(std::size_t idx,
                                                      std::string_view value) {
   // check, that idx in range [1, total block number]
-  assert((idx >= 1u) && (idx <= total_blocks_number_));
+  assert((idx >= 1u) && (idx <= total_blocks_));
 
   auto new_sum = userver::crypto::hash::Sha256(value);
   auto hash = blocks_hashes_.SharedLock();
 
-  auto index = idx - 1;
+  auto index = idx - 1u;
   const auto& stored_sum = (*hash)[index];
 
   if (stored_sum != new_sum)
@@ -70,9 +70,9 @@ void FileBuilder::save_block(std::size_t idx, std::string_view value) {
 }
 
 void FileBuilder::update_block_hash(std::size_t idx, std::string hash) {
-  assert((idx >= 1u) && (idx <= total_blocks_number_));
+  assert((idx >= 1u) && (idx <= total_blocks_));
 
-  auto index = idx - 1;
+  auto index = idx - 1u;
   auto hash_lock = blocks_hashes_.Lock();
   (*hash_lock)[index] = std::move(hash);
 }

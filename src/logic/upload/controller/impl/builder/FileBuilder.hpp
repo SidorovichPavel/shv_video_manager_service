@@ -12,14 +12,14 @@
 
 namespace svh::video::logic::upload::controller::impl::builder {
 
-extern const std::string k_default_tmp_dir;
+extern const std::string k_default_build_dir;
 
 class FileBuilder {
   friend bool operator<(const FileBuilder& rsh, const FileBuilder& lsh);
 
  public:
   FileBuilder(std::string file_name, std::size_t total_blocks_number,
-              std::string workspace_dir = k_default_tmp_dir);
+              std::string workspace_dir = k_default_build_dir);
 
   // check what all blocks received
   bool is_ready();
@@ -30,7 +30,7 @@ class FileBuilder {
   void push_block(std::size_t idx, std::string_view value);
 
   // build result file in directory
-  void build(std::string path = k_default_tmp_dir);
+  void build(std::string path = k_default_build_dir);
 
  private:
   // return new sha256 sum if block not exist or was updated
@@ -45,7 +45,7 @@ class FileBuilder {
   userver::concurrent::Variable<std::vector<std::string>,
                                 userver::engine::SharedMutex>
       blocks_hashes_;
-  std::size_t total_blocks_number_;
+  std::size_t total_blocks_;
   std::string file_name_;
 };
 
