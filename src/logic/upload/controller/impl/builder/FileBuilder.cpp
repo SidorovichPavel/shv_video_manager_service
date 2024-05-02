@@ -76,8 +76,4 @@ void FileBuilder::update_block_hash(std::size_t idx, std::string hash) {
   (*hash_lock)[index] = std::move(hash);
 }
 
-bool operator<(const FileBuilder& rsh, const FileBuilder& lsh) {
-  return rsh.file_name_ < lsh.file_name_;
-}
-
 }  // namespace svh::video::logic::upload::controller::impl::builder

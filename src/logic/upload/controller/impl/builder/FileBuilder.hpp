@@ -15,8 +15,6 @@ namespace svh::video::logic::upload::controller::impl::builder {
 extern const std::string k_default_build_dir;
 
 class FileBuilder {
-  friend bool operator<(const FileBuilder& rsh, const FileBuilder& lsh);
-
  public:
   FileBuilder(std::string file_name, std::size_t total_blocks_number,
               std::string workspace_dir = k_default_build_dir);
