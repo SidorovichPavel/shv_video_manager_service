@@ -15,9 +15,12 @@ namespace svh::video::logic::upload::controller::impl::builder {
 extern const std::string k_default_build_dir;
 
 class FileBuilder {
+  /// TODO: Use tmpfile() and
  public:
   FileBuilder(std::string file_name, std::size_t total_blocks_number,
               std::string workspace_dir = k_default_build_dir);
+
+  ~FileBuilder();
 
   // check what all blocks received
   bool is_ready() const;
@@ -30,6 +33,8 @@ class FileBuilder {
   // build result file in directory
   void build(std::string path = k_default_build_dir);
 
+  void clear() const noexcept;
+
  private:
   // return new sha256 sum if block not exist or was updated
   std::optional<std::string> get_hash_if_need_write(std::size_t idx,
@@ -39,12 +44,13 @@ class FileBuilder {
 
   void update_block_hash(std::size_t idx, std::string hash);
 
-  std::filesystem::path workspace_direction_;
   userver::concurrent::Variable<std::vector<std::string>,
                                 userver::engine::SharedMutex>
       blocks_hashes_;
-  std::size_t total_blocks_;
-  std::string file_name_;
+
+  const std::filesystem::path workspace_direction_;
+  const std::size_t total_blocks_;
+  const std::string file_name_;
 };
 
 }  // namespace svh::video::logic::upload::controller::impl::builder

@@ -29,11 +29,19 @@ class UploadControllerImpl {
       std::chrono::seconds(15)};
   constexpr static std::string_view gc_task_name = "gc-task-name";
 
-  void gc_task() { LOG_DEBUG() << "Periodic task step"; }
+  userver::engine::TaskWithResult<void> blocking_push(std::string uid,
+                                                      std::string file_name,
+                                                      std::size_t total_blocks,
+                                                      std::size_t block_idx,
+                                                      std::string_view value);
+
+  void gc_task();
 
   ExpirationFileBuilder* get_file_builder(std::string uid,
                                           std::string file_name,
                                           std::size_t total_blocks);
+
+  void delete_file_builder(std::string uid);
 
   userver::concurrent::Variable<
       std::map<std::string, std::unique_ptr<ExpirationFileBuilder>>,

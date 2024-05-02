@@ -20,15 +20,33 @@ void UploadControllerImpl::push_block(std::string uid, std::string file_name,
                                       std::size_t total_blocks,
                                       std::size_t block_idx,
                                       std::string_view value) {
-  ExpirationFileBuilder* builder =
-      get_file_builder(uid, file_name, total_blocks);
+  blocking_push(uid, file_name, total_blocks, block_idx, value).Get();
+}
 
-  builder->push_block(block_idx, value);
+void UploadControllerImpl::gc_task() {
+  /// TODO: Garbage Collercot implementation
+}
 
-  builder->update();
+userver::engine::TaskWithResult<void> UploadControllerImpl::blocking_push(
+    std::string uid, std::string file_name, std::size_t total_blocks,
+    std::size_t block_idx, std::string_view value) {
+  const std::string task_name("fs-blocking-write-task");
+  return userver::utils::Async(
+      fs_task_processor_, task_name,
+      [this](std::string uid, std::string file_name, std::size_t total_blocks,
+             std::size_t block_idx, std::string_view value) {
+        auto builder = get_file_builder(uid, file_name, total_blocks);
 
-  if (builder->is_ready()) {
-  }
+        builder->push_block(block_idx, value);
+
+        builder->update();
+
+        if (builder->is_ready()) {
+          builder->build();
+          delete_file_builder(uid);
+        }
+      },
+      uid, file_name, total_blocks, block_idx, value);
 }
 
 ExpirationFileBuilder* UploadControllerImpl::get_file_builder(
@@ -39,6 +57,16 @@ ExpirationFileBuilder* UploadControllerImpl::get_file_builder(
         std::make_unique<ExpirationFileBuilder>(file_name, total_blocks);
 
   return (*builders_lock)[uid].get();
+}
+
+void UploadControllerImpl::delete_file_builder(std::string uid) {
+  std::unique_ptr<ExpirationFileBuilder> target;
+  {
+    auto builders_shared_lock = builders_.Lock();
+
+    target = std::move((*builders_shared_lock)[uid]);
+    std::ignore = builders_shared_lock->erase(uid);
+  }
 }
 
 }  // namespace svh::video::logic::upload::controller::impl
