@@ -11,7 +11,7 @@ class ExpirationFileBuilder {
  public:
   ExpirationFileBuilder(
       std::string file_name, std::size_t total_blocks_number,
-      std::string workspace_dir = builder::k_default_tmp_dir,
+      std::string workspace_dir = builder::k_default_build_dir,
       expiration::duration live_time = expiration::k_default_expiration_time);
 
   ExpirationFileBuilder(const ExpirationFileBuilder&) = delete;
@@ -25,7 +25,7 @@ class ExpirationFileBuilder {
 
   void push_block(std::size_t idx, std::string_view value);
 
-  void build(std::string dir = builder::k_default_tmp_dir);
+  void build(std::string dir = builder::k_default_build_dir);
 
   bool expired() const noexcept;
 
@@ -34,11 +34,6 @@ class ExpirationFileBuilder {
 
   builder::FileBuilder file_builder_;
   expiration::ExpirationController expire_controller_;
-};
-
-struct EFBComparator {
-  bool operator()(const ExpirationFileBuilder& rsh,
-                  const ExpirationFileBuilder& lsh) const;
 };
 
 }  // namespace svh::video::logic::upload::controller::impl

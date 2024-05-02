@@ -29,8 +29,4 @@ bool ExpirationFileBuilder::expired() const noexcept {
 
 void ExpirationFileBuilder::update() noexcept { expire_controller_.update(); }
 
-bool EFBComparator::operator()(const ExpirationFileBuilder& rsh,
-                               const ExpirationFileBuilder& lsh) const {
-  return rsh.file_builder_.get_name() < lsh.file_builder_.get_name();
-}
 }  // namespace svh::video::logic::upload::controller::impl
