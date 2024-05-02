@@ -22,6 +22,12 @@ class UploadController {
                   std::size_t total_blocks_number, std::size_t block_idx,
                   std::string_view value);
 
+  UploadController(const UploadController&) = delete;
+  UploadController(UploadController&&) = delete;
+
+  UploadController& operator=(const UploadController&) = delete;
+  UploadController& operator=(UploadController&&) = delete;
+
  private:
   static constexpr std::size_t kImplSize =
       userver::compiler::SelectSize().For64Bit(848u).For32Bit(4u);
