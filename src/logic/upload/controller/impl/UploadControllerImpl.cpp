@@ -51,6 +51,8 @@ userver::engine::TaskWithResult<void> UploadControllerImpl::blocking_push(
 
 ExpirationFileBuilder* UploadControllerImpl::get_file_builder(
     std::string uid, std::string file_name, std::size_t total_blocks) {
+  /// TODO: fix locking time
+
   auto builders_lock = builders_.Lock();
   if ((*builders_lock)[uid] == nullptr)
     (*builders_lock)[uid] =
