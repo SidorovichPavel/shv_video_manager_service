@@ -7,14 +7,15 @@
 #include <userver/server/component.hpp>
 #include <userver/yaml_config/yaml_config.hpp>
 
-namespace svh::video::components::dash_converter {
+namespace svh::video::components::convert {
 
-class DashConverter final : public userver::components::LoggableComponentBase {
+class DashConvertComponent final
+    : public userver::components::LoggableComponentBase {
  public:
   constexpr static std::string_view kName = "dash-converter";
 
-  DashConverter(const userver::components::ComponentConfig& cfg,
-                const userver::components::ComponentContext& ctx);
+  DashConvertComponent(const userver::components::ComponentConfig& cfg,
+                      const userver::components::ComponentContext& ctx);
 
   static userver::yaml_config::Schema GetStaticConfigSchema();
 
@@ -22,4 +23,4 @@ class DashConverter final : public userver::components::LoggableComponentBase {
   userver::engine::TaskProcessor& convert_task_processor_;
 };
 
-}  // namespace svh::video::components::dash_converter
+}  // namespace svh::video::components::convert

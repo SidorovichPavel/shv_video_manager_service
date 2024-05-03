@@ -61,7 +61,7 @@ std::string UploadHandler::HandleRequestThrow(
   upload_controller_->push_block(filename, filename, total_chunks, chunk_number,
                                  file_data.value);
 
-  return std::string("OK!\n");
+  return std::string{};
 }
 
 std::string UploadHandler::MakeBadRequestValue(

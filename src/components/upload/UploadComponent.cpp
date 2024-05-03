@@ -7,8 +7,9 @@
 
 namespace svh::video::components::upload {
 
-UploadComponent::UploadComponent(const userver::components::ComponentConfig& cfg,
-                   const userver::components::ComponentContext& ctx)
+UploadComponent::UploadComponent(
+    const userver::components::ComponentConfig& cfg,
+    const userver::components::ComponentContext& ctx)
     : userver::components::LoggableComponentBase(cfg, ctx),
       fs_task_processor_(
           ctx.GetTaskProcessor(cfg["fs-task-processor"].As<std::string>())),

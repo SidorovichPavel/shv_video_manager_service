@@ -5,7 +5,7 @@
 #include <userver/testsuite/testsuite_support.hpp>
 #include <userver/utils/daemon_run.hpp>
 
-#include "components/dash_converter/fwd.hpp"
+#include "components/convert/fwd.hpp"
 #include "components/http/options/fwd.hpp"
 #include "components/http/post/upload/fwd.hpp"
 #include "components/upload/fwd.hpp"
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
   svh::video::components::http::post::upload::Append(component_list);
   svh::video::components::http::options::Append(component_list);
   svh::video::components::upload::Append(component_list);
-  svh::video::components::dash_converter::Append(component_list);
+  svh::video::components::convert::Append(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

@@ -1,18 +1,19 @@
-#include "DashConverter.hpp"
+#include "DashConvertComponent.hpp"
 #include "fwd.hpp"
 
 #include <userver/components/component.hpp>
 #include <userver/yaml_config/merge_schemas.hpp>
 
-namespace svh::video::components::dash_converter {
+namespace svh::video::components::convert {
 
-DashConverter::DashConverter(const userver::components::ComponentConfig& cfg,
-                             const userver::components::ComponentContext& ctx)
+DashConvertComponent::DashConvertComponent(
+    const userver::components::ComponentConfig& cfg,
+    const userver::components::ComponentContext& ctx)
     : userver::components::LoggableComponentBase(cfg, ctx),
       convert_task_processor_(ctx.GetTaskProcessor(
           cfg["convert-task-processor"].As<std::string>())){};
 
-userver::yaml_config::Schema DashConverter::GetStaticConfigSchema() {
+userver::yaml_config::Schema DashConvertComponent::GetStaticConfigSchema() {
   return userver::yaml_config::MergeSchemas<
       userver::components::LoggableComponentBase>(R"(
 type: object
@@ -26,7 +27,7 @@ properties:
 }
 
 void Append(userver::components::ComponentList& component_list) {
-  component_list.Append<DashConverter>();
+  component_list.Append<DashConvertComponent>();
 }
 
-}  // namespace svh::video::components::dash_converter
+}  // namespace svh::video::components::convert

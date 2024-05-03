@@ -32,6 +32,7 @@ target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 
 # Common components
 add_library(${PROJECT_NAME}_http_components OBJECT
+
     # video uploader
     src/components/http/post/upload/UploadHandler.hpp
     src/components/http/post/upload/UploadHandler.cpp
@@ -47,6 +48,7 @@ target_include_directories(${PROJECT_NAME}_http_components PRIVATE src/)
 target_include_directories(${PROJECT_NAME}_http_components PRIVATE src/components/upload)
 
 add_library(${PROJECT_NAME}_upload_component OBJECT
+
     # file conroller
     src/components/upload/UploadComponent.hpp
     src/components/upload/UploadComponent.cpp
@@ -56,17 +58,20 @@ target_link_libraries(${PROJECT_NAME}_upload_component PUBLIC userver::core)
 target_include_directories(${PROJECT_NAME}_upload_component PRIVATE src/)
 
 add_library(${PROJECT_NAME}_convert_objs OBJECT
+
     # dash converter component
-    src/components/dash_converter/DashConverter.hpp
-    src/components/dash_converter/DashConverter.cpp
-    src/components/dash_converter/fwd.hpp
+    src/components/convert/DashConvertComponent.hpp
+    src/components/convert/DashConvertComponent.cpp
+    src/components/convert/fwd.hpp
 )
 target_link_libraries(${PROJECT_NAME}_convert_objs PUBLIC userver::core)
 
 add_library(${PROJECT_NAME}_log_objs OBJECT
+
     # interface
     src/logic/upload/controller/UploadController.hpp
     src/logic/upload/controller/UploadController.cpp
+
     # impl
     src/logic/upload/controller/impl/UploadControllerImpl.hpp
     src/logic/upload/controller/impl/UploadControllerImpl.cpp
@@ -105,3 +110,17 @@ add_google_benchmark_tests(${PROJECT_NAME}_benchmark)
 include(UserverTestsuite)
 
 userver_testsuite_add_simple()
+
+# Install
+include(GNUInstallDirs)
+
+if(DEFINED ENV{PREFIX})
+    message(STATUS "Set install prefix: $ENV{PREFIX}")
+    file(TO_CMAKE_PATH "$ENV{PREFIX}" PREFIX_PATH)
+    set(CMAKE_INSTALL_PREFIX ${PREFIX_PATH})
+endif()
+
+file(GLOB CONFIGS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/configs/*.yaml ${CMAKE_CURRENT_SOURCE_DIR}/configs/*.json)
+
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT ${PROJECT_NAME})
+install(FILES ${CONFIGS_FILES} DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/${PROJECT_NAME} COMPONENT ${PROJECT_NAME})
