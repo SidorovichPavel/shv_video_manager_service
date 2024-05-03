@@ -17,7 +17,7 @@ userver::yaml_config::Schema DashConverter::GetStaticConfigSchema() {
       userver::components::LoggableComponentBase>(R"(
 type: object
 additionalProperties: false
-description: component-converter
+description: component-converte
 properties:
     convert-task-processor:
         type: string
