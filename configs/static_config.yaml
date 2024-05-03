@@ -7,6 +7,9 @@ components_manager:
         fs-task-processor:            # Make a separate task processor for filesystem bound tasks.
             worker_threads: $worker-fs-threads
 
+        bg-task-processor:
+            worker_threads: 2
+
     default_task_processor: main-task-processor
 
     components:                       # Configuring components that were registered via component_list
