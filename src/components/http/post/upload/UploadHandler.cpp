@@ -1,5 +1,5 @@
 #include "UploadHandler.hpp"
-#include "../../../upload/Uploader.hpp"
+#include <UploadComponent.hpp>
 #include "fwd.hpp"
 
 #include <charconv>
@@ -15,7 +15,7 @@ UploadHandler::UploadHandler(const userver::components::ComponentConfig& cfg,
                              const userver::components::ComponentContext& ctx)
     : userver::server::handlers::HttpHandlerBase(cfg, ctx),
       upload_controller_(
-          ctx.FindComponent<::svh::video::components::upload::Uploader>()
+          ctx.FindComponent<::svh::video::components::upload::UploadComponent>()
               .GetUploadControllerPtr()) {}
 
 std::string UploadHandler::HandleRequestThrow(

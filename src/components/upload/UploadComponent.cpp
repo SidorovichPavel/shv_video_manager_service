@@ -1,4 +1,4 @@
-#include "Uploader.hpp"
+#include "UploadComponent.hpp"
 #include "fwd.hpp"
 
 #include <logic/upload/controller/impl/UploadControllerImpl.hpp>
@@ -7,7 +7,7 @@
 
 namespace svh::video::components::upload {
 
-Uploader::Uploader(const userver::components::ComponentConfig& cfg,
+UploadComponent::UploadComponent(const userver::components::ComponentConfig& cfg,
                    const userver::components::ComponentContext& ctx)
     : userver::components::LoggableComponentBase(cfg, ctx),
       fs_task_processor_(
@@ -16,7 +16,7 @@ Uploader::Uploader(const userver::components::ComponentConfig& cfg,
           std::make_shared<logic::upload::controller::UploadController>(
               fs_task_processor_)) {}
 
-userver::yaml_config::Schema Uploader::GetStaticConfigSchema() {
+userver::yaml_config::Schema UploadComponent::GetStaticConfigSchema() {
   return userver::yaml_config::MergeSchemas<
       userver::components::LoggableComponentBase>(R"(
 type: object
@@ -30,12 +30,12 @@ properties:
 }
 
 std::shared_ptr<logic::upload::controller::UploadController>
-Uploader::GetUploadControllerPtr() const {
+UploadComponent::GetUploadControllerPtr() const {
   return upload_controller_ptr_;
 }
 
 void Append(userver::components::ComponentList& components_list) {
-  components_list.Append<Uploader>();
+  components_list.Append<UploadComponent>();
 }
 
 }  // namespace svh::video::components::upload

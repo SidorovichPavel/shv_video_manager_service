@@ -31,13 +31,7 @@ add_library(${PROJECT_NAME}_objs OBJECT
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
 
 # Common components
-add_library(${PROJECT_NAME}_comps_objs OBJECT
-
-    # file conroller
-    src/components/upload/Uploader.hpp
-    src/components/upload/Uploader.cpp
-    src/components/upload/fwd.hpp
-
+add_library(${PROJECT_NAME}_http_components OBJECT
     # video uploader
     src/components/http/post/upload/UploadHandler.hpp
     src/components/http/post/upload/UploadHandler.cpp
@@ -48,8 +42,18 @@ add_library(${PROJECT_NAME}_comps_objs OBJECT
     src/components/http/options/OptionsHandler.cpp
     src/components/http/options/fwd.hpp
 )
-target_link_libraries(${PROJECT_NAME}_comps_objs PUBLIC userver::postgresql)
-target_include_directories(${PROJECT_NAME}_comps_objs PRIVATE src/)
+target_link_libraries(${PROJECT_NAME}_http_components PUBLIC userver::postgresql)
+target_include_directories(${PROJECT_NAME}_http_components PRIVATE src/)
+target_include_directories(${PROJECT_NAME}_http_components PRIVATE src/components/upload)
+
+add_library(${PROJECT_NAME}_upload_component OBJECT
+    # file conroller
+    src/components/upload/UploadComponent.hpp
+    src/components/upload/UploadComponent.cpp
+    src/components/upload/fwd.hpp
+)
+target_link_libraries(${PROJECT_NAME}_upload_component PUBLIC userver::core)
+target_include_directories(${PROJECT_NAME}_upload_component PRIVATE src/)
 
 add_library(${PROJECT_NAME}_convert_objs OBJECT
     # dash converter component
@@ -78,7 +82,8 @@ target_link_libraries(${PROJECT_NAME}_log_objs PUBLIC userver::core)
 # The Service
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_objs)
-target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_comps_objs)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_http_components)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_upload_component)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_log_objs)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_convert_objs)
 

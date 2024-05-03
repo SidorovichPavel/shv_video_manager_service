@@ -10,13 +10,13 @@
 #include <logic/upload/controller/UploadController.hpp>
 
 namespace svh::video::components::upload {
-class Uploader final : public userver::components::LoggableComponentBase {
+class UploadComponent final : public userver::components::LoggableComponentBase {
  public:
   constexpr static std::string_view kName = "upload-processor";
 
   static userver::yaml_config::Schema GetStaticConfigSchema();
 
-  Uploader(const userver::components::ComponentConfig& cfg,
+  UploadComponent(const userver::components::ComponentConfig& cfg,
            const userver::components::ComponentContext& ctx);
 
   std::shared_ptr<logic::upload::controller::UploadController>
