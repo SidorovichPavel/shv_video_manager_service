@@ -51,6 +51,14 @@ add_library(${PROJECT_NAME}_comps_objs OBJECT
 target_link_libraries(${PROJECT_NAME}_comps_objs PUBLIC userver::postgresql)
 target_include_directories(${PROJECT_NAME}_comps_objs PRIVATE src/)
 
+add_library(${PROJECT_NAME}_convert_objs OBJECT
+    # dash converter component
+    src/components/dash_converter/DashConverter.hpp
+    src/components/dash_converter/DashConverter.cpp
+    src/components/dash_converter/fwd.hpp
+)
+target_link_libraries(${PROJECT_NAME}_convert_objs PUBLIC userver::core)
+
 add_library(${PROJECT_NAME}_log_objs OBJECT
     # interface
     src/logic/upload/controller/UploadController.hpp
@@ -72,6 +80,7 @@ add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_objs)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_comps_objs)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_log_objs)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_convert_objs)
 
 # Unit Tests
 add_executable(${PROJECT_NAME}_unittest

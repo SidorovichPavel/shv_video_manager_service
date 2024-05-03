@@ -73,6 +73,9 @@ components_manager:
         upload-processor:
             fs-task-processor: fs-task-processor
 
+        dash-converter:
+            convert-task-processor: bg-task-processor
+
         postgres-db-1:
             dbconnection: $dbconnection
             blocking_task_processor: fs-task-processor
