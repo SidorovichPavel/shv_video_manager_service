@@ -29,7 +29,7 @@ class UploadControllerImpl {
       std::chrono::seconds(15)};
   constexpr static std::string_view gc_task_name = "gc-task-name";
 
-  userver::engine::TaskWithResult<void> blocking_push(std::string uid,
+  userver::engine::TaskWithResult<void> async_push(std::string uid,
                                                       std::string file_name,
                                                       std::size_t total_blocks,
                                                       std::size_t block_idx,

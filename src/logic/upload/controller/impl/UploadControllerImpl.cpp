@@ -20,14 +20,14 @@ void UploadControllerImpl::push_block(std::string uid, std::string file_name,
                                       std::size_t total_blocks,
                                       std::size_t block_idx,
                                       std::string_view value) {
-  blocking_push(uid, file_name, total_blocks, block_idx, value).Get();
+  async_push(uid, file_name, total_blocks, block_idx, value).Get();
 }
 
 void UploadControllerImpl::gc_task() {
   /// TODO: Garbage Collercot implementation
 }
 
-userver::engine::TaskWithResult<void> UploadControllerImpl::blocking_push(
+userver::engine::TaskWithResult<void> UploadControllerImpl::async_push(
     std::string uid, std::string file_name, std::size_t total_blocks,
     std::size_t block_idx, std::string_view value) {
   const std::string task_name("fs-blocking-write-task");
