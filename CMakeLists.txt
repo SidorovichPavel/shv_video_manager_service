@@ -44,7 +44,7 @@ add_library(${PROJECT_NAME}_http_components OBJECT
     src/components/http/options/fwd.hpp
 )
 target_link_libraries(${PROJECT_NAME}_http_components PUBLIC userver::postgresql)
-target_include_directories(${PROJECT_NAME}_http_components PRIVATE src/)
+target_include_directories(${PROJECT_NAME}_http_components PRIVATE src/logic/upload)
 target_include_directories(${PROJECT_NAME}_http_components PRIVATE src/components/upload)
 
 add_library(${PROJECT_NAME}_upload_component OBJECT
@@ -55,16 +55,16 @@ add_library(${PROJECT_NAME}_upload_component OBJECT
     src/components/upload/fwd.hpp
 )
 target_link_libraries(${PROJECT_NAME}_upload_component PUBLIC userver::core)
-target_include_directories(${PROJECT_NAME}_upload_component PRIVATE src/)
+target_include_directories(${PROJECT_NAME}_upload_component PRIVATE src/logic/upload)
 
-add_library(${PROJECT_NAME}_convert_objs OBJECT
+add_library(${PROJECT_NAME}_convert_component OBJECT
 
     # dash converter component
     src/components/convert/DashConvertComponent.hpp
     src/components/convert/DashConvertComponent.cpp
     src/components/convert/fwd.hpp
 )
-target_link_libraries(${PROJECT_NAME}_convert_objs PUBLIC userver::core)
+target_link_libraries(${PROJECT_NAME}_convert_component PUBLIC userver::core)
 
 add_library(${PROJECT_NAME}_log_objs OBJECT
 
@@ -84,13 +84,29 @@ add_library(${PROJECT_NAME}_log_objs OBJECT
 )
 target_link_libraries(${PROJECT_NAME}_log_objs PUBLIC userver::core)
 
+add_library(${PROJECT_NAME}_convert_control OBJECT
+
+    # ConvertController
+    src/logic/convert/controller/ConvertController.hpp
+    src/logic/convert/controller/ConvertController.cpp
+
+    # ConvertController impl
+    src/logic/convert/controller/impl/ConvertControllerImpl.hpp
+    src/logic/convert/controller/impl/ConvertControllerImpl.cpp
+    src/logic/convert/controller/impl/ConvertConfig.hpp
+    src/logic/convert/controller/impl/ConvertConfig.cpp
+)
+target_link_libraries(${PROJECT_NAME}_convert_control PUBLIC userver::core)
+target_include_directories(${PROJECT_NAME}_convert_component PRIVATE src/logic/convert)
+
 # The Service
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_objs)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_http_components)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_upload_component)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_log_objs)
-target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_convert_objs)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_convert_component)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_convert_control)
 
 # Unit Tests
 add_executable(${PROJECT_NAME}_unittest
