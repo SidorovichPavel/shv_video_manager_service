@@ -15,7 +15,7 @@ class DashConvertComponent final
   constexpr static std::string_view kName = "dash-converter";
 
   DashConvertComponent(const userver::components::ComponentConfig& cfg,
-                      const userver::components::ComponentContext& ctx);
+                       const userver::components::ComponentContext& ctx);
 
   static userver::yaml_config::Schema GetStaticConfigSchema();
 
