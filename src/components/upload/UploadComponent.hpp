@@ -7,7 +7,7 @@
 #include <userver/server/component.hpp>
 #include <userver/yaml_config/yaml_config.hpp>
 
-#include <logic/upload/controller/UploadController.hpp>
+#include <controller/UploadController.hpp>
 
 namespace svh::video::components::upload {
 class UploadComponent final
