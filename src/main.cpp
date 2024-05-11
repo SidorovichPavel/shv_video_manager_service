@@ -11,7 +11,9 @@
 #include "components/upload/fwd.hpp"
 #include "hello.hpp"
 
-int main(int argc, char* argv[]) {
+#include <userver/cache/base_postgres_cache_fwd.hpp>
+
+int main(int argc, char *argv[]) {
   auto component_list = userver::components::MinimalServerComponentList()
                             .Append<userver::server::handlers::Ping>()
                             .Append<userver::components::TestsuiteSupport>()

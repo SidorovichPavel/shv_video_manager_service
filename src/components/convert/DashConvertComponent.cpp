@@ -1,5 +1,8 @@
 #include "DashConvertComponent.hpp"
 #include "fwd.hpp"
+#include <UploadComponent.hpp>
+
+#include <controller/impl/ConvertControllerImpl.hpp>
 
 #include <userver/components/component.hpp>
 #include <userver/yaml_config/merge_schemas.hpp>
@@ -7,11 +10,21 @@
 namespace svh::video::components::convert {
 
 DashConvertComponent::DashConvertComponent(
-    const userver::components::ComponentConfig& cfg,
-    const userver::components::ComponentContext& ctx)
+    const userver::components::ComponentConfig &cfg,
+    const userver::components::ComponentContext &ctx)
     : userver::components::LoggableComponentBase(cfg, ctx),
       convert_task_processor_(ctx.GetTaskProcessor(
-          cfg["convert-task-processor"].As<std::string>())){};
+          cfg["convert-task-processor"].As<std::string>())),
+      convert_controller_ptr_(
+          std::make_shared<logic::convert::controller::ConvertController>(
+              convert_task_processor_,
+              logic::convert::controller::ConfigBuilder{}.Make())),
+      upload_controller_ptr_(ctx.FindComponent<upload::UploadComponent>()
+                                 .GetUploadControllerPtr()) {
+  upload_controller_ptr_->on_upload([this](std::string filename) {
+    convert_controller_ptr_->enqueue(filename);
+  });
+}
 
 userver::yaml_config::Schema DashConvertComponent::GetStaticConfigSchema() {
   return userver::yaml_config::MergeSchemas<
@@ -26,8 +39,12 @@ properties:
   )");
 }
 
-void Append(userver::components::ComponentList& component_list) {
+auto DashConvertComponent::GetConvertController() {
+  return convert_controller_ptr_;
+}
+
+void Append(userver::components::ComponentList &component_list) {
   component_list.Append<DashConvertComponent>();
 }
 
-}  // namespace svh::video::components::convert
+} // namespace svh::video::components::convert

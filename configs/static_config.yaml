@@ -74,7 +74,7 @@ components_manager:
             fs-task-processor: fs-task-processor
 
         dash-converter:
-            convert-task-processor: bg-task-processor
+            convert-task-processor: main-task-processor
 
         postgres-db-1:
             dbconnection: $dbconnection

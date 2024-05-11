@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cstdint>
 #include <string>
 #include <string_view>
 
@@ -28,9 +27,12 @@ class UploadController {
   UploadController& operator=(const UploadController&) = delete;
   UploadController& operator=(UploadController&&) = delete;
 
+  // callback must be immutable
+  void on_upload(std::function<void(std::string)> callback);
+
  private:
   static constexpr std::size_t kImplSize =
-      userver::compiler::SelectSize().For64Bit(848u);
+      userver::compiler::SelectSize().For64Bit(880u);
   static constexpr std::size_t kImplAlignment =
       userver::compiler::SelectSize().For64Bit(16u);
 

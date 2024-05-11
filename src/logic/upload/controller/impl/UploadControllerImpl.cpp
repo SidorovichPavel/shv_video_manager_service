@@ -6,7 +6,7 @@
 namespace svh::video::logic::upload::controller::impl {
 
 UploadControllerImpl::UploadControllerImpl(
-    userver::engine::TaskProcessor& fs_task_processor)
+    userver::engine::TaskProcessor &fs_task_processor)
     : fs_task_processor_(fs_task_processor), gc_task_() {
   userver::utils::PeriodicTask::Settings periodic_task_settings(default_period);
   periodic_task_settings.task_processor = &fs_task_processor;
@@ -21,6 +21,11 @@ void UploadControllerImpl::push_block(std::string uid, std::string file_name,
                                       std::size_t block_idx,
                                       std::string_view value) {
   async_push(uid, file_name, total_blocks, block_idx, value).Get();
+}
+
+void UploadControllerImpl::on_upload(
+    std::function<void(std::string)> callback) {
+  callback_ = callback;
 }
 
 void UploadControllerImpl::gc_task() {
@@ -44,13 +49,15 @@ userver::engine::TaskWithResult<void> UploadControllerImpl::async_push(
         if (builder->is_ready()) {
           builder->build();
           delete_file_builder(uid);
+          callback_(builder::k_default_build_dir + uid);
         }
       },
       uid, file_name, total_blocks, block_idx, value);
 }
 
-ExpirationFileBuilder* UploadControllerImpl::get_file_builder(
-    std::string uid, std::string file_name, std::size_t total_blocks) {
+ExpirationFileBuilder *
+UploadControllerImpl::get_file_builder(std::string uid, std::string file_name,
+                                       std::size_t total_blocks) {
   /// TODO: fix locking time
 
   auto builders_lock = builders_.Lock();
@@ -71,4 +78,4 @@ void UploadControllerImpl::delete_file_builder(std::string uid) {
   }
 }
 
-}  // namespace svh::video::logic::upload::controller::impl
+} // namespace svh::video::logic::upload::controller::impl

@@ -65,6 +65,7 @@ add_library(${PROJECT_NAME}_convert_component OBJECT
     src/components/convert/fwd.hpp
 )
 target_link_libraries(${PROJECT_NAME}_convert_component PUBLIC userver::core)
+target_include_directories(${PROJECT_NAME}_convert_component PRIVATE src/components/upload)
 
 add_library(${PROJECT_NAME}_log_objs OBJECT
 
@@ -83,6 +84,7 @@ add_library(${PROJECT_NAME}_log_objs OBJECT
     src/logic/upload/controller/impl/expiration/ExpirationController.cpp
 )
 target_link_libraries(${PROJECT_NAME}_log_objs PUBLIC userver::core)
+target_include_directories(${PROJECT_NAME}_convert_component PRIVATE src/logic/upload)
 
 add_library(${PROJECT_NAME}_convert_control OBJECT
 
