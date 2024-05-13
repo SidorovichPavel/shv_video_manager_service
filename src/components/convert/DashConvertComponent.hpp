@@ -1,12 +1,13 @@
 #pragma once
 
-#include <controller/ConvertController.hpp>
 
 #include <memory>
 #include <string_view>
 
+#include <controller/ConvertController.hpp>
 #include <controller/UploadController.hpp>
 
+#include <userver/components/process_starter.hpp>
 #include <userver/components/loggable_component_base.hpp>
 #include <userver/engine/async.hpp>
 #include <userver/server/component.hpp>
@@ -15,7 +16,7 @@
 namespace svh::video::components::convert {
 
 class DashConvertComponent final
-    : public userver::components::LoggableComponentBase {
+    : public userver::components::ProcessStarter {
 public:
   constexpr static std::string_view kName = "dash-converter";
 
@@ -23,8 +24,6 @@ public:
                        const userver::components::ComponentContext &ctx);
 
   static userver::yaml_config::Schema GetStaticConfigSchema();
-
-  auto GetConvertController();
 
 private:
   userver::engine::TaskProcessor &convert_task_processor_;

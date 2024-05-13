@@ -24,7 +24,7 @@ public:
                   std::string_view value);
 
   // callback must be immutable
-  void on_upload(std::function<void(std::string)> callback);
+  void upload_callback(std::function<void(std::string, std::string)> callback);
 
 private:
   constexpr static std::chrono::milliseconds default_period{
@@ -50,6 +50,6 @@ private:
   userver::engine::TaskProcessor &fs_task_processor_;
   userver::utils::PeriodicTask gc_task_;
 
-  std::function<void(std::string)> callback_;
+  std::function<void(std::string, std::string)> callback_;
 };
 } // namespace svh::video::logic::upload::controller::impl

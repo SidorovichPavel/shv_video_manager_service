@@ -24,13 +24,14 @@ ConfigBuilder::SetVideoCodecPreset(std::string_view video_codec_preset) {
 
 ConvertController::ConvertController(
     userver::engine::TaskProcessor &task_processor,
+    userver::engine::subprocess::ProcessStarter &process_starter,
     std::unique_ptr<impl::ConvertConfig> conv_cfg)
-    : impl_(task_processor, std::move(conv_cfg)) {}
+    : impl_(task_processor, process_starter, std::move(conv_cfg)) {}
 
 ConvertController::~ConvertController() {}
 
-void ConvertController::enqueue(std::string filename) {
-  impl_->enqueue(filename);
+void ConvertController::enqueue(std::string path, std::string filename) {
+  impl_->enqueue(std::move(path), std::move(filename));
 }
 
 } // namespace svh::video::logic::convert::controller

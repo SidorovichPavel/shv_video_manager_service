@@ -12,23 +12,24 @@ namespace svh::video::components::convert {
 DashConvertComponent::DashConvertComponent(
     const userver::components::ComponentConfig &cfg,
     const userver::components::ComponentContext &ctx)
-    : userver::components::LoggableComponentBase(cfg, ctx),
+    : userver::components::ProcessStarter(cfg, ctx),
       convert_task_processor_(ctx.GetTaskProcessor(
           cfg["convert-task-processor"].As<std::string>())),
       convert_controller_ptr_(
           std::make_shared<logic::convert::controller::ConvertController>(
-              convert_task_processor_,
+              convert_task_processor_, Get(),
               logic::convert::controller::ConfigBuilder{}.Make())),
       upload_controller_ptr_(ctx.FindComponent<upload::UploadComponent>()
                                  .GetUploadControllerPtr()) {
-  upload_controller_ptr_->on_upload([this](std::string filename) {
-    convert_controller_ptr_->enqueue(filename);
-  });
+  upload_controller_ptr_->upload_callback(
+      [this](std::string path, std::string filename) {
+        convert_controller_ptr_->enqueue(std::move(path), std::move(filename));
+      });
 }
 
 userver::yaml_config::Schema DashConvertComponent::GetStaticConfigSchema() {
   return userver::yaml_config::MergeSchemas<
-      userver::components::LoggableComponentBase>(R"(
+      userver::components::ProcessStarter>(R"(
 type: object
 additionalProperties: false
 description: component-converte
@@ -37,10 +38,6 @@ properties:
         type: string
         description : name of task processor to video chunks processing
   )");
-}
-
-auto DashConvertComponent::GetConvertController() {
-  return convert_controller_ptr_;
 }
 
 void Append(userver::components::ComponentList &component_list) {

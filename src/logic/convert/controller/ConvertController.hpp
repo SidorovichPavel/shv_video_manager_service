@@ -4,6 +4,7 @@
 #include <string>
 
 #include <userver/compiler/select.hpp>
+#include <userver/engine/subprocess/process_starter.hpp>
 #include <userver/engine/task/task_processor_fwd.hpp>
 #include <userver/formats/parse/to.hpp>
 #include <userver/utils/fast_pimpl.hpp>
@@ -29,6 +30,7 @@ private:
 class ConvertController {
 public:
   ConvertController(userver::engine::TaskProcessor &,
+                    userver::engine::subprocess::ProcessStarter &,
                     std::unique_ptr<impl::ConvertConfig>);
 
   ~ConvertController();
@@ -38,11 +40,11 @@ public:
   ConvertController &operator=(const ConvertController &) = delete;
   ConvertController &operator=(ConvertController &&) = delete;
 
-  void enqueue(std::string);
+  void enqueue(std::string, std::string);
 
 private:
   constexpr static auto kImplSize =
-      userver::compiler::SelectSize().For64Bit(336);
+      userver::compiler::SelectSize().For64Bit(344);
   constexpr static auto kImplAlignment =
       userver::compiler::SelectSize().For64Bit(8);
   userver::utils::FastPimpl<impl::ConvertControllerImpl, kImplSize,

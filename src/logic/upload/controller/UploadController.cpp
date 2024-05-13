@@ -15,8 +15,8 @@ void UploadController::push_block(std::string uid, std::string file_name,
   impl_->push_block(uid, file_name, total_blocks_number, block_idx, value);
 }
 
-void UploadController::on_upload(std::function<void(std::string)> callback) {
-  impl_->on_upload(callback);
+void UploadController::upload_callback(std::function<void(std::string,std::string)> callback) {
+  impl_->upload_callback(callback);
 }
 
 } // namespace svh::video::logic::upload::controller

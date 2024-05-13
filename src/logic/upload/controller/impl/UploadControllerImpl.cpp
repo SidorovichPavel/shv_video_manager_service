@@ -23,8 +23,8 @@ void UploadControllerImpl::push_block(std::string uid, std::string file_name,
   async_push(uid, file_name, total_blocks, block_idx, value).Get();
 }
 
-void UploadControllerImpl::on_upload(
-    std::function<void(std::string)> callback) {
+void UploadControllerImpl::upload_callback(
+    std::function<void(std::string, std::string)> callback) {
   callback_ = callback;
 }
 
@@ -49,7 +49,7 @@ userver::engine::TaskWithResult<void> UploadControllerImpl::async_push(
         if (builder->is_ready()) {
           builder->build();
           delete_file_builder(uid);
-          callback_(builder::k_default_build_dir + uid);
+          callback_(builder::k_default_build_dir, uid);
         }
       },
       uid, file_name, total_blocks, block_idx, value);

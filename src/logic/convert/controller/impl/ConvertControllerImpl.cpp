@@ -1,9 +1,13 @@
 #include "ConvertControllerImpl.hpp"
 
 #include <filesystem>
+#include <iostream>
 
+#include <fmt/core.h>
+#include <fmt/format.h>
 #include <userver/engine/async.hpp>
 #include <userver/engine/semaphore.hpp>
+#include <userver/engine/subprocess/process_starter.hpp>
 #include <userver/engine/task/task_with_result.hpp>
 #include <userver/utils/async.hpp>
 
@@ -11,16 +15,17 @@ namespace svh::video::logic::convert::controller::impl {
 
 ConvertControllerImpl::ConvertControllerImpl(
     userver::engine::TaskProcessor &task_processor,
+    userver::engine::subprocess::ProcessStarter &process_starter,
     std::unique_ptr<ConvertConfig> conf_ptr, std::string_view work_dir)
-    : task_processor_(task_processor), work_dir_(work_dir),
-      config_ptr_(std::move(conf_ptr)), stop_(false) {
+    : task_processor_(task_processor), process_starter_(process_starter),
+      work_dir_(work_dir), config_ptr_(std::move(conf_ptr)), stop_(false) {
   if (!std::filesystem::exists(work_dir_))
     std::filesystem::create_directory(work_dir_);
 
   convert_task_ = userver::utils::Async(
       task_processor_, std::string(convert_task_name), [this] {
         for (;;) {
-          std::string filename;
+          std::string path, filename;
           {
             auto queue_lock = convert_queue_.UniqueLock();
 
@@ -36,7 +41,7 @@ ConvertControllerImpl::ConvertControllerImpl(
             if (stop_ && queue_lock->empty())
               return;
 
-            filename = std::move(queue_lock->front());
+            std::tie(path, filename) = std::move(queue_lock->front());
             queue_lock->pop();
           }
 
@@ -44,7 +49,7 @@ ConvertControllerImpl::ConvertControllerImpl(
           userver::engine::Semaphore sem(max_simultaneous_locks);
           {
             std::shared_lock lock(sem);
-            convertion(filename);
+            convertion(path, filename);
           }
         }
       });
@@ -56,16 +61,30 @@ ConvertControllerImpl::~ConvertControllerImpl() {
   convert_task_.Get();
 }
 
-void ConvertControllerImpl::enqueue(std::string filename) {
+void ConvertControllerImpl::enqueue(std::string path, std::string filename) {
   {
     auto queue_lock = convert_queue_.UniqueLock();
-    queue_lock->push(std::move(filename));
+    queue_lock->emplace(std::move(path), std::move(filename));
   }
   convert_condition_.NotifyAll();
 }
 
-void ConvertControllerImpl::convertion(std::string filename) {
-  auto path = std::filesystem::path(filename);
+void ConvertControllerImpl::convertion(std::string path, std::string filename) {
+  auto source = path + '/';
+  source += filename;
+  std::string filename_without_ext =
+      filename.substr(0, filename.find_last_of('.'));
+  std::filesystem::path outdir =
+      std::filesystem::path("/tmp/stream") / filename_without_ext;
+  std::filesystem::create_directory(outdir);
+  auto outfile = outdir / filename_without_ext;
+  auto [command, args] = config_ptr_->apply(source, outfile.u8string());
+  try {
+    process_starter_.Exec(command, args);
+
+  } catch (const std::exception &e) {
+    std::cerr << e.what() << std::endl;
+  }
 }
 
 } // namespace svh::video::logic::convert::controller::impl

@@ -28,7 +28,7 @@ class UploadController {
   UploadController& operator=(UploadController&&) = delete;
 
   // callback must be immutable
-  void on_upload(std::function<void(std::string)> callback);
+  void upload_callback(std::function<void(std::string, std::string)> callback);
 
  private:
   static constexpr std::size_t kImplSize =
