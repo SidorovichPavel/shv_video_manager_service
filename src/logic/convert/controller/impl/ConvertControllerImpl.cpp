@@ -13,11 +13,14 @@
 namespace svh::video::logic::convert::controller::impl {
 
 ConvertControllerImpl::ConvertControllerImpl(
-    userver::engine::TaskProcessor &task_processor,
-    userver::engine::subprocess::ProcessStarter &process_starter,
+    userver::engine::TaskProcessor& task_processor,
+    userver::engine::subprocess::ProcessStarter& process_starter,
     std::unique_ptr<ConvertConfig> conf_ptr, std::string_view work_dir)
-    : task_processor_(task_processor), process_starter_(process_starter),
-      work_dir_(work_dir), config_ptr_(std::move(conf_ptr)), stop_(false) {
+    : task_processor_(task_processor),
+      process_starter_(process_starter),
+      work_dir_(work_dir),
+      config_ptr_(std::move(conf_ptr)),
+      stop_(false) {
   if (!std::filesystem::exists(work_dir_))
     std::filesystem::create_directory(work_dir_);
 
@@ -37,8 +40,7 @@ ConvertControllerImpl::ConvertControllerImpl(
                   convert_condition_.Wait(queue_lock.GetLock(), pred);
             }
 
-            if (stop_ && queue_lock->empty())
-              return;
+            if (stop_ && queue_lock->empty()) return;
 
             std::tie(path, filename) = std::move(queue_lock->front());
             queue_lock->pop();
@@ -81,4 +83,4 @@ void ConvertControllerImpl::convertion(std::string path, std::string filename) {
   process_starter_.Exec(command, args);
 }
 
-} // namespace svh::video::logic::convert::controller::impl
+}  // namespace svh::video::logic::convert::controller::impl

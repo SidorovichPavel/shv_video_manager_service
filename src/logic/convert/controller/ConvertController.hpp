@@ -14,35 +14,35 @@ namespace svh::video::logic::convert::controller {
 namespace impl {
 class ConvertControllerImpl;
 class ConvertConfig;
-} // namespace impl
+}  // namespace impl
 
 class ConfigBuilder {
-public:
+ public:
   ConfigBuilder();
   std::unique_ptr<impl::ConvertConfig> Make();
-  ConfigBuilder &SetVideoCodec(std::string_view video_codec);
-  ConfigBuilder &SetVideoCodecPreset(std::string_view video_codec_preset);
+  ConfigBuilder& SetVideoCodec(std::string_view video_codec);
+  ConfigBuilder& SetVideoCodecPreset(std::string_view video_codec_preset);
 
-private:
+ private:
   std::unique_ptr<impl::ConvertConfig> config_;
 };
 
 class ConvertController {
-public:
-  ConvertController(userver::engine::TaskProcessor &,
-                    userver::engine::subprocess::ProcessStarter &,
+ public:
+  ConvertController(userver::engine::TaskProcessor&,
+                    userver::engine::subprocess::ProcessStarter&,
                     std::unique_ptr<impl::ConvertConfig>);
 
   ~ConvertController();
 
-  ConvertController(const ConvertController &) = delete;
-  ConvertController(ConvertController &&) = delete;
-  ConvertController &operator=(const ConvertController &) = delete;
-  ConvertController &operator=(ConvertController &&) = delete;
+  ConvertController(const ConvertController&) = delete;
+  ConvertController(ConvertController&&) = delete;
+  ConvertController& operator=(const ConvertController&) = delete;
+  ConvertController& operator=(ConvertController&&) = delete;
 
   void enqueue(std::string, std::string);
 
-private:
+ private:
   constexpr static auto kImplSize =
       userver::compiler::SelectSize().For64Bit(344);
   constexpr static auto kImplAlignment =
@@ -52,4 +52,4 @@ private:
       impl_;
 };
 
-} // namespace svh::video::logic::convert::controller
+}  // namespace svh::video::logic::convert::controller

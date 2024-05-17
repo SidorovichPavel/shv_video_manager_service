@@ -139,13 +139,15 @@ namespace {
         "{}.mpd"
     ]
 })");*/
-} // namespace
+}  // namespace
 
 ConvertConfig::ConvertConfig()
-    : frame_rate_(default_frame_rate), video_codec_(default_video_codec),
+    : frame_rate_(default_frame_rate),
+      video_codec_(default_video_codec),
       keyint_min_(default_keyint_min),
       iframe_gen_step_(default_iframe_gen_step),
-      seg_duration_(default_seg_duration), input_arg_index_(0u),
+      seg_duration_(default_seg_duration),
+      input_arg_index_(0u),
       output_arg_index_(0u) {
   command_args_ = std::vector<std::string>{"-hide_banner",
                                            "-y",
@@ -242,8 +244,8 @@ ConvertConfig::ConvertConfig()
                                            "{}.mpd"};
 }
 
-std::pair<std::string, std::vector<std::string>>
-ConvertConfig::apply(std::string_view input, std::string_view output) {
+std::pair<std::string, std::vector<std::string>> ConvertConfig::apply(
+    std::string_view input, std::string_view output) {
   std::string command("/bin/ffmpeg");
   command_args_[3] = input;
   command_args_.back() = fmt::format("{}.mpd", output);
@@ -257,12 +259,12 @@ void ConvertConfig::set_video_codec(std::string_view video_codec) {
 void ConvertConfig::set_video_codec_preset(
     std::string_view video_codec_preset) {}
 
-} // namespace svh::video::logic::convert::controller::impl
+}  // namespace svh::video::logic::convert::controller::impl
 
 auto fmt::formatter<svh::video::logic::convert::controller::impl::
                         ConvertConfig::VideoCodecPreset>::
     format(const svh::video::logic::convert::controller::impl::ConvertConfig::
-               VideoCodecPreset &vcp,
-           fmt::format_context &ctx) const {
+               VideoCodecPreset& vcp,
+           fmt::format_context& ctx) const {
   return fmt::format_to(ctx.out(), (vcp ? "-preset {}" : ""), vcp.value());
 }

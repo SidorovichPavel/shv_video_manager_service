@@ -1,6 +1,6 @@
 #include "DashConvertComponent.hpp"
-#include "fwd.hpp"
 #include <UploadComponent.hpp>
+#include "fwd.hpp"
 
 #include <controller/impl/ConvertControllerImpl.hpp>
 
@@ -10,8 +10,8 @@
 namespace svh::video::components::convert {
 
 DashConvertComponent::DashConvertComponent(
-    const userver::components::ComponentConfig &cfg,
-    const userver::components::ComponentContext &ctx)
+    const userver::components::ComponentConfig& cfg,
+    const userver::components::ComponentContext& ctx)
     : userver::components::LoggableComponentBase(cfg, ctx),
       convert_task_processor_(ctx.GetTaskProcessor(
           cfg["convert-task-processor"].As<std::string>())),
@@ -41,8 +41,8 @@ properties:
   )");
 }
 
-void Append(userver::components::ComponentList &component_list) {
+void Append(userver::components::ComponentList& component_list) {
   component_list.Append<DashConvertComponent>();
 }
 
-} // namespace svh::video::components::convert
+}  // namespace svh::video::components::convert

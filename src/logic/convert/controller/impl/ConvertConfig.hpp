@@ -12,7 +12,7 @@
 namespace svh::video::logic::convert::controller::impl {
 
 class ConvertConfig {
-public:
+ public:
   ConvertConfig();
 
   std::pair<std::string, std::vector<std::string>> apply(std::string_view,
@@ -22,11 +22,11 @@ public:
   void set_video_codec_preset(std::string_view);
 
   class VideoCodecPreset final : public std::optional<std::string> {
-  public:
+   public:
     using std::optional<std::string>::optional;
   };
 
-private:
+ private:
   constexpr static std::uint16_t default_frame_rate = 25;
   constexpr static std::string_view default_video_codec = "h264";
   constexpr static std::string_view default_video_codec_preset = "veryfast";
@@ -47,13 +47,13 @@ private:
   std::vector<std::string> command_args_;
 };
 
-} // namespace svh::video::logic::convert::controller::impl
+}  // namespace svh::video::logic::convert::controller::impl
 
 template <>
 struct fmt::formatter<svh::video::logic::convert::controller::impl::
                           ConvertConfig::VideoCodecPreset>
     : formatter<std::string> {
   auto format(const svh::video::logic::convert::controller::impl::
-                  ConvertConfig::VideoCodecPreset &vcp,
-              fmt::format_context &ctx) const;
+                  ConvertConfig::VideoCodecPreset& vcp,
+              fmt::format_context& ctx) const;
 };

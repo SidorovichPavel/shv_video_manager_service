@@ -8,16 +8,16 @@ namespace svh::video::logic::upload::controller::impl {
 class ExpirationFileBuilder {
   friend struct EFBComparator;
 
-public:
+ public:
   ExpirationFileBuilder(
       std::string file_name, std::size_t total_blocks,
       std::string workspace_dir = builder::k_default_build_dir,
       expiration::duration live_time = expiration::k_default_expiration_time);
 
-  ExpirationFileBuilder(const ExpirationFileBuilder &) = delete;
-  ExpirationFileBuilder(ExpirationFileBuilder &&) = delete;
-  ExpirationFileBuilder &operator=(const ExpirationFileBuilder &) = delete;
-  ExpirationFileBuilder &operator=(ExpirationFileBuilder &&) = delete;
+  ExpirationFileBuilder(const ExpirationFileBuilder&) = delete;
+  ExpirationFileBuilder(ExpirationFileBuilder&&) = delete;
+  ExpirationFileBuilder& operator=(const ExpirationFileBuilder&) = delete;
+  ExpirationFileBuilder& operator=(ExpirationFileBuilder&&) = delete;
 
   bool is_ready() const;
 
@@ -36,4 +36,4 @@ public:
   expiration::ExpirationController expire_controller_;
 };
 
-} // namespace svh::video::logic::upload::controller::impl
+}  // namespace svh::video::logic::upload::controller::impl

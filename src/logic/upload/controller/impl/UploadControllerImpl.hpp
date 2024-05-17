@@ -14,8 +14,8 @@
 namespace svh::video::logic::upload::controller::impl {
 
 class UploadControllerImpl {
-public:
-  UploadControllerImpl(userver::engine::TaskProcessor &fs_task_processor);
+ public:
+  UploadControllerImpl(userver::engine::TaskProcessor& fs_task_processor);
 
   ~UploadControllerImpl();
 
@@ -26,18 +26,20 @@ public:
   // callback must be immutable
   void upload_callback(std::function<void(std::string, std::string)> callback);
 
-private:
+ private:
   constexpr static std::chrono::milliseconds default_period{
       std::chrono::seconds(15)};
   constexpr static std::string_view gc_task_name = "gc-task-name";
 
-  userver::engine::TaskWithResult<void>
-  async_push(std::string uid, std::string file_name, std::size_t total_blocks,
-             std::size_t block_idx, std::string_view value);
+  userver::engine::TaskWithResult<void> async_push(std::string uid,
+                                                   std::string file_name,
+                                                   std::size_t total_blocks,
+                                                   std::size_t block_idx,
+                                                   std::string_view value);
 
   void gc_task();
 
-  ExpirationFileBuilder *get_file_builder(std::string uid,
+  ExpirationFileBuilder* get_file_builder(std::string uid,
                                           std::string file_name,
                                           std::size_t total_blocks);
 
@@ -47,9 +49,9 @@ private:
       std::map<std::string, std::unique_ptr<ExpirationFileBuilder>>,
       userver::engine::Mutex>
       builders_;
-  userver::engine::TaskProcessor &fs_task_processor_;
+  userver::engine::TaskProcessor& fs_task_processor_;
   userver::utils::PeriodicTask gc_task_;
 
   std::function<void(std::string, std::string)> callback_;
 };
-} // namespace svh::video::logic::upload::controller::impl
+}  // namespace svh::video::logic::upload::controller::impl
