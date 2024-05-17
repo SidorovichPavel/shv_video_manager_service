@@ -12,12 +12,13 @@ namespace svh::video::components::convert {
 DashConvertComponent::DashConvertComponent(
     const userver::components::ComponentConfig &cfg,
     const userver::components::ComponentContext &ctx)
-    : userver::components::ProcessStarter(cfg, ctx),
+    : userver::components::LoggableComponentBase(cfg, ctx),
       convert_task_processor_(ctx.GetTaskProcessor(
           cfg["convert-task-processor"].As<std::string>())),
       convert_controller_ptr_(
           std::make_shared<logic::convert::controller::ConvertController>(
-              convert_task_processor_, Get(),
+              convert_task_processor_,
+              ctx.FindComponent<userver::components::ProcessStarter>().Get(),
               logic::convert::controller::ConfigBuilder{}.Make())),
       upload_controller_ptr_(ctx.FindComponent<upload::UploadComponent>()
                                  .GetUploadControllerPtr()) {

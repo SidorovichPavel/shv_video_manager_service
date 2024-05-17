@@ -58,6 +58,9 @@ components_manager:
             method: POST                  # It will only reply to POST requests.
             task_processor: main-task-processor  # Run it on CPU bound task processor
 
+        process-starter:
+            task_processor: main-task-processor
+
         # Common components
         video-uploader:
             path: /api/upload
@@ -74,8 +77,7 @@ components_manager:
             fs-task-processor: fs-task-processor
 
         dash-converter:
-            convert-task-processor: bg-task-processor
-            task_processor: bg-task-processor
+            convert-task-processor: main-task-processor
 
         postgres-db-1:
             dbconnection: $dbconnection

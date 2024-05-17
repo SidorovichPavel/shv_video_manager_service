@@ -16,7 +16,7 @@
 namespace svh::video::components::convert {
 
 class DashConvertComponent final
-    : public userver::components::ProcessStarter {
+    : public userver::components::LoggableComponentBase {
 public:
   constexpr static std::string_view kName = "dash-converter";
 
