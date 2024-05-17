@@ -1,7 +1,6 @@
 #include "ConvertControllerImpl.hpp"
 
 #include <filesystem>
-#include <iostream>
 
 #include <fmt/core.h>
 #include <fmt/format.h>
@@ -74,17 +73,12 @@ void ConvertControllerImpl::convertion(std::string path, std::string filename) {
   source += filename;
   std::string filename_without_ext =
       filename.substr(0, filename.find_last_of('.'));
-  std::filesystem::path outdir =
-      std::filesystem::path("/tmp/stream") / filename_without_ext;
+  std::filesystem::path outdir = work_dir_ / filename_without_ext;
+
   std::filesystem::create_directory(outdir);
   auto outfile = outdir / filename_without_ext;
   auto [command, args] = config_ptr_->apply(source, outfile.u8string());
-  try {
-    process_starter_.Exec(command, args);
-
-  } catch (const std::exception &e) {
-    std::cerr << e.what() << std::endl;
-  }
+  process_starter_.Exec(command, args);
 }
 
 } // namespace svh::video::logic::convert::controller::impl
