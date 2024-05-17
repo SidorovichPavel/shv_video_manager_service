@@ -23,6 +23,8 @@ endif()
 
 userver_setup_environment()
 
+find_package(jwt-cpp REQUIRED)
+
 # Common sources
 add_library(${PROJECT_NAME}_objs OBJECT
     src/hello.hpp
@@ -108,6 +110,7 @@ target_include_directories(${PROJECT_NAME}_convert_component PRIVATE src/logic/c
 
 # The Service
 add_executable(${PROJECT_NAME} src/main.cpp)
+target_link_libraries(${PROJECT_NAME} PUBLIC jwt-cpp::jwt-cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_objs)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_http_components)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_upload_component)
