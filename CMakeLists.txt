@@ -38,6 +38,11 @@ add_library(${PROJECT_NAME}_http_components OBJECT
     src/components/http/post/upload/UploadHandler.cpp
     src/components/http/post/upload/fwd.hpp
 
+    # auload access
+    src/components/http/get/upload/UploadAccessor.hpp
+    src/components/http/get/upload/UploadAccessor.cpp
+    src/components/http/get/upload/fwd.hpp
+
     # options
     src/components/http/options/OptionsHandler.hpp
     src/components/http/options/OptionsHandler.cpp

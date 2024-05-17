@@ -7,6 +7,7 @@
 #include <userver/utils/daemon_run.hpp>
 
 #include "components/convert/fwd.hpp"
+#include "components/http/get/upload/fwd.hpp"
 #include "components/http/options/fwd.hpp"
 #include "components/http/post/upload/fwd.hpp"
 #include "components/upload/fwd.hpp"
@@ -23,8 +24,9 @@ int main(int argc, char *argv[]) {
                             .Append<userver::components::ProcessStarter>();
 
   svh_video_service::AppendHello(component_list);
-  svh::video::components::http::post::upload::Append(component_list);
   svh::video::components::http::options::Append(component_list);
+  svh::video::components::http::post::upload::Append(component_list);
+  svh::video::components::http::get::upload::Append(component_list);
   svh::video::components::upload::Append(component_list);
   svh::video::components::convert::Append(component_list);
 

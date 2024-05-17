@@ -62,6 +62,12 @@ components_manager:
             task_processor: main-task-processor
 
         # Common components
+
+        upload-accessor:
+            path: /api/upload
+            method: GET
+            task_processor: main-task-processor
+
         video-uploader:
             path: /api/upload
             method: POST
