@@ -17,7 +17,7 @@ std::string OptionsHandler::HandleRequestThrow(
   using namespace std::string_view_literals;
   request.GetHttpResponse().SetHeader("Access-Control-Allow-Origin"sv, "*");
   request.GetHttpResponse().SetHeader("Access-Control-Allow-Methods"sv,
-                                      "OPTIONS, POST");
+                                      "OPTIONS, POST, GET");
   request.GetHttpResponse().SetHeader("Access-Control-Allow-Headers"sv,
                                       "X-PINGOTHER, Content-Type");
   return std::string("Ok\n");
