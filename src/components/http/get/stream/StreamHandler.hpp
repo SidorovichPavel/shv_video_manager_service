@@ -2,6 +2,8 @@
 
 #include <string_view>
 
+#include <userver/components/fs_cache.hpp>
+#include <userver/fs/fs_cache_client.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
 #include <userver/server/http/http_response_body_stream_fwd.hpp>
 
@@ -20,7 +22,7 @@ class StreamHandler final : public userver::server::handlers::HttpHandlerBase {
       userver::server::http::ResponseBodyStream&) const override;
 
  private:
-  std::size_t GetStreamId(std::string_view stream) const;
+  const userver::fs::FsCacheClient& fs_cache_client_;
 };
 
 }  // namespace svh::video::components::http::get::stream

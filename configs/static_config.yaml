@@ -88,6 +88,9 @@ components_manager:
             response-body-stream: true
             task_processor: main-task-processor
 
+        stream-fs-cache:
+            dir: /tmp/streams/
+
         svh_video_service_db:
             dbconnection: $dbconnection
             blocking_task_processor: fs-task-processor
