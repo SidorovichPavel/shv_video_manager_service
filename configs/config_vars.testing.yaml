@@ -7,4 +7,4 @@ is-testing: true
 server-port: 8090
 
 # svh_video_service_db_1 is the service name + _ + filename of the db_1.sql
-dbconnection: 'postgresql://testsuite@localhost:15433/svh_video_service_db_1'
+dbconnection: 'postgresql://testsuite@localhost:15433/svh_video_service_db'

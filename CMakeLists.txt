@@ -25,13 +25,6 @@ userver_setup_environment()
 
 find_package(jwt-cpp REQUIRED)
 
-# Common sources
-add_library(${PROJECT_NAME}_objs OBJECT
-    src/hello.hpp
-    src/hello.cpp
-)
-target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::postgresql)
-
 # Common components
 add_library(${PROJECT_NAME}_http_components OBJECT
 
@@ -45,10 +38,17 @@ add_library(${PROJECT_NAME}_http_components OBJECT
     src/components/http/get/upload/UploadAccessor.cpp
     src/components/http/get/upload/fwd.hpp
 
+    # stream
+    src/components/http/get/stream/StreamHandler.hpp
+    src/components/http/get/stream/StreamHandler.cpp
+    src/components/http/get/stream/fwd.hpp
+
     # options
     src/components/http/options/OptionsHandler.hpp
     src/components/http/options/OptionsHandler.cpp
     src/components/http/options/fwd.hpp
+
+
 )
 target_link_libraries(${PROJECT_NAME}_http_components PUBLIC userver::postgresql)
 target_include_directories(${PROJECT_NAME}_http_components PRIVATE src/logic/upload)
@@ -74,7 +74,7 @@ add_library(${PROJECT_NAME}_convert_component OBJECT
 target_link_libraries(${PROJECT_NAME}_convert_component PUBLIC userver::core)
 target_include_directories(${PROJECT_NAME}_convert_component PRIVATE src/components/upload)
 
-add_library(${PROJECT_NAME}_log_objs OBJECT
+add_library(${PROJECT_NAME}_upload_control OBJECT
 
     # interface
     src/logic/upload/controller/UploadController.hpp
@@ -90,7 +90,7 @@ add_library(${PROJECT_NAME}_log_objs OBJECT
     src/logic/upload/controller/impl/expiration/ExpirationController.hpp
     src/logic/upload/controller/impl/expiration/ExpirationController.cpp
 )
-target_link_libraries(${PROJECT_NAME}_log_objs PUBLIC userver::core)
+target_link_libraries(${PROJECT_NAME}_upload_control PUBLIC userver::core)
 target_include_directories(${PROJECT_NAME}_convert_component PRIVATE src/logic/upload)
 
 add_library(${PROJECT_NAME}_convert_control OBJECT
@@ -111,26 +111,11 @@ target_include_directories(${PROJECT_NAME}_convert_component PRIVATE src/logic/c
 # The Service
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC jwt-cpp::jwt-cpp)
-target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_objs)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_http_components)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_upload_component)
-target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_log_objs)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_upload_control)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_convert_component)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_convert_control)
-
-# Unit Tests
-add_executable(${PROJECT_NAME}_unittest
-    src/hello_test.cpp
-)
-target_link_libraries(${PROJECT_NAME}_unittest PRIVATE ${PROJECT_NAME}_objs userver::utest)
-add_google_tests(${PROJECT_NAME}_unittest)
-
-# Benchmarks
-add_executable(${PROJECT_NAME}_benchmark
-    src/hello_benchmark.cpp
-)
-target_link_libraries(${PROJECT_NAME}_benchmark PRIVATE ${PROJECT_NAME}_objs userver::ubench)
-add_google_benchmark_tests(${PROJECT_NAME}_benchmark)
 
 # Functional Tests
 include(UserverTestsuite)

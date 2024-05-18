@@ -4,6 +4,6 @@
 
 namespace svh::video::components::http::get::upload {
 
-void Append(userver::components::ComponentList &component_list);
+void Append(userver::components::ComponentList& component_list);
 
 }

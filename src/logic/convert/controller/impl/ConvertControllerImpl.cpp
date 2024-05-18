@@ -78,8 +78,7 @@ void ConvertControllerImpl::convertion(std::string path, std::string filename) {
   std::filesystem::path outdir = work_dir_ / filename_without_ext;
 
   std::filesystem::create_directory(outdir);
-  auto outfile = outdir / filename_without_ext;
-  auto [command, args] = config_ptr_->apply(source, outfile.u8string());
+  auto [command, args] = config_ptr_->apply(source, outdir.u8string());
   process_starter_.Exec(command, args);
 }
 
