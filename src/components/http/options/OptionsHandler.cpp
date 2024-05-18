@@ -13,7 +13,8 @@ OptionsHandler::OptionsHandler(const userver::components::ComponentConfig& cfg,
 
 std::string OptionsHandler::HandleRequestThrow(
     const userver::server::http::HttpRequest& request,
-    userver::server::request::RequestContext& context) const {
+    [[maybe_unused]] userver::server::request::RequestContext& request_context)
+    const {
   using namespace std::string_view_literals;
   request.GetHttpResponse().SetHeader("Access-Control-Allow-Origin"sv, "*");
   request.GetHttpResponse().SetHeader("Access-Control-Allow-Methods"sv,

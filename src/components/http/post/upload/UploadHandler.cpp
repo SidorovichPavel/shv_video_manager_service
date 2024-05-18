@@ -20,7 +20,8 @@ UploadHandler::UploadHandler(const userver::components::ComponentConfig& cfg,
 
 std::string UploadHandler::HandleRequestThrow(
     const userver::server::http::HttpRequest& request,
-    userver::server::request::RequestContext&) const {
+    [[maybe_unused]] userver::server::request::RequestContext& request_context)
+    const {
   EnableCORS(request);
 
   auto content_type = userver::http::ContentType(

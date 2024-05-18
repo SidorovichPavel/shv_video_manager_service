@@ -2,6 +2,7 @@
 #include "fwd.hpp"
 
 #include <jwt-cpp/jwt.h>
+#include <userver/components/component.hpp>
 #include <userver/storages/postgres/component.hpp>
 
 namespace svh::video::components::http::get::upload {
@@ -16,7 +17,8 @@ UploadAccessor::UploadAccessor(const userver::components::ComponentConfig& cfg,
 userver::formats::json::Value UploadAccessor::HandleRequestJsonThrow(
     const userver::server::http::HttpRequest& request,
     const userver::formats::json::Value& request_json,
-    userver::server::request::RequestContext& context) const {
+    [[maybe_unused]] userver::server::request::RequestContext& request_context)
+    const {
   EnableCORS(request);
 
   userver::formats::json::ValueBuilder json_builder;

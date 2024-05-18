@@ -16,7 +16,7 @@ class OptionsHandler final : public userver::server::handlers::HttpHandlerBase {
 
   std::string HandleRequestThrow(
       const userver::server::http::HttpRequest& request,
-      userver::server::request::RequestContext& context) const override;
+      userver::server::request::RequestContext& request_context) const override;
 
  private:
 };

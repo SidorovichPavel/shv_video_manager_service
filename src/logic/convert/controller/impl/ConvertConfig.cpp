@@ -257,11 +257,11 @@ std::pair<std::string, std::vector<std::string>> ConvertConfig::apply(
   return std::make_pair(std::move(command), command_args_);
 }
 
-void ConvertConfig::set_video_codec(std::string_view video_codec) {
-  video_codec_ = video_codec;
-}
+// void ConvertConfig::set_video_codec(std::string_view video_codec) {
+//   video_codec_ = video_codec;
+// }
 
-void ConvertConfig::set_video_codec_preset(
-    std::string_view video_codec_preset) {}
+// void ConvertConfig::set_video_codec_preset(
+//     std::string_view video_codec_preset) {}
 
 }  // namespace svh::video::logic::convert::controller::impl

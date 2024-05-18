@@ -18,8 +18,8 @@ class ConvertConfig {
   std::pair<std::string, std::vector<std::string>> apply(std::string_view,
                                                          std::string_view);
 
-  void set_video_codec(std::string_view);
-  void set_video_codec_preset(std::string_view);
+  // void set_video_codec(std::string_view);
+  // void set_video_codec_preset(std::string_view);
 
  private:
   constexpr static std::uint16_t default_frame_rate = 25;
