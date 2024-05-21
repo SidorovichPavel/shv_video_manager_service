@@ -35,9 +35,11 @@ SET search_path TO pg_catalog,public,svh_video_schema;
 -- DROP TABLE IF EXISTS svh_video_schema.videos CASCADE;
 CREATE TABLE svh_video_schema.videos (
 	id bigserial NOT NULL,
-	user_id uuid NOT NULL,
+	created_at timestamptz NOT NULL,
+	owner uuid NOT NULL,
 	title text NOT NULL,
 	descrpt text NOT NULL,
+	age_rating text,
 	CONSTRAINT videos_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -80,40 +82,66 @@ REFERENCES svh_video_schema.tags (id) MATCH FULL
 ON DELETE SET NULL ON UPDATE CASCADE;
 -- ddl-end --
 
--- object: svh_video_schema.constraints | type: TABLE --
--- DROP TABLE IF EXISTS svh_video_schema.constraints CASCADE;
-CREATE TABLE svh_video_schema.constraints (
-	id bigserial NOT NULL,
+-- object: svh_video_schema.categories | type: TABLE --
+-- DROP TABLE IF EXISTS svh_video_schema.categories CASCADE;
+CREATE TABLE svh_video_schema.categories (
+	id serial NOT NULL,
 	title text NOT NULL,
-	CONSTRAINT constraints_pk PRIMARY KEY (id)
+	CONSTRAINT categories_pk PRIMARY KEY (id)
 );
 -- ddl-end --
-ALTER TABLE svh_video_schema.constraints OWNER TO svh;
+ALTER TABLE svh_video_schema.categories OWNER TO svh;
 -- ddl-end --
 
--- object: svh_video_schema.constraints_to_videos | type: TABLE --
--- DROP TABLE IF EXISTS svh_video_schema.constraints_to_videos CASCADE;
-CREATE TABLE svh_video_schema.constraints_to_videos (
+-- object: svh_video_schema.categories_to_videos | type: TABLE --
+-- DROP TABLE IF EXISTS svh_video_schema.categories_to_videos CASCADE;
+CREATE TABLE svh_video_schema.categories_to_videos (
 	id_videos bigint,
-	id_constraints bigint
+	id_categories integer
 
 );
 -- ddl-end --
-ALTER TABLE svh_video_schema.constraints_to_videos OWNER TO svh;
+ALTER TABLE svh_video_schema.categories_to_videos OWNER TO svh;
 -- ddl-end --
 
 -- object: videos_fk | type: CONSTRAINT --
--- ALTER TABLE svh_video_schema.constraints_to_videos DROP CONSTRAINT IF EXISTS videos_fk CASCADE;
-ALTER TABLE svh_video_schema.constraints_to_videos ADD CONSTRAINT videos_fk FOREIGN KEY (id_videos)
+-- ALTER TABLE svh_video_schema.categories_to_videos DROP CONSTRAINT IF EXISTS videos_fk CASCADE;
+ALTER TABLE svh_video_schema.categories_to_videos ADD CONSTRAINT videos_fk FOREIGN KEY (id_videos)
 REFERENCES svh_video_schema.videos (id) MATCH FULL
 ON DELETE SET NULL ON UPDATE CASCADE;
 -- ddl-end --
 
--- object: constraints_fk | type: CONSTRAINT --
--- ALTER TABLE svh_video_schema.constraints_to_videos DROP CONSTRAINT IF EXISTS constraints_fk CASCADE;
-ALTER TABLE svh_video_schema.constraints_to_videos ADD CONSTRAINT constraints_fk FOREIGN KEY (id_constraints)
-REFERENCES svh_video_schema.constraints (id) MATCH FULL
+-- object: categories_fk | type: CONSTRAINT --
+-- ALTER TABLE svh_video_schema.categories_to_videos DROP CONSTRAINT IF EXISTS categories_fk CASCADE;
+ALTER TABLE svh_video_schema.categories_to_videos ADD CONSTRAINT categories_fk FOREIGN KEY (id_categories)
+REFERENCES svh_video_schema.categories (id) MATCH FULL
 ON DELETE SET NULL ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: svh_video_schema.video_type | type: TYPE --
+-- DROP TYPE IF EXISTS svh_video_schema.video_type CASCADE;
+CREATE TYPE svh_video_schema.video_type AS
+(
+ id bigint,
+ created_at timestamptz,
+ owner uuid,
+ title text,
+ descrpt text,
+ age_rating text
+);
+-- ddl-end --
+ALTER TYPE svh_video_schema.video_type OWNER TO svh;
+-- ddl-end --
+
+-- object: svh_video_schema.video_tag_type | type: TYPE --
+-- DROP TYPE IF EXISTS svh_video_schema.video_tag_type CASCADE;
+CREATE TYPE svh_video_schema.video_tag_type AS
+(
+ video_id bigint,
+ tag_id bigint
+);
+-- ddl-end --
+ALTER TYPE svh_video_schema.video_tag_type OWNER TO svh;
 -- ddl-end --
 
 

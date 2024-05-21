@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.1.3" use-changelog="false" max-obj-count="6"
+	 last-position="34,204" last-zoom="1"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<role name="svh"
+ inherit="true"
+ login="true"
+ password="swh123qwe">
+</role>
+
+<database name="svh_video_service_db" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" name-color="#000000" sql-disabled="true">
+</schema>
+
+<schema name="svh_video_schema" layers="0" rect-visible="true" fill-color="#e1e1e1" name-color="#31363b">
+	<role name="svh"/>
+</schema>
+
+<table name="videos" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="svh_video_schema"/>
+	<role name="svh"/>
+	<position x="240" y="360"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="created_at" not-null="true">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="owner" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="title" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="descrpt" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="age_rating">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="videos_pk" type="pk-constr" table="svh_video_schema.videos">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tags" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="svh_video_schema"/>
+	<role name="svh"/>
+	<position x="1100" y="400"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="title" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="tags_pk" type="pk-constr" table="svh_video_schema.tags">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tags_to_videos" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="svh_video_schema"/>
+	<role name="svh"/>
+	<position x="680" y="380"/>
+</table>
+
+<relationship name="videos_has_many_tags_to_videos" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#f8902a"
+	 src-table="svh_video_schema.videos"
+	 dst-table="svh_video_schema.tags_to_videos"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="tags_has_many_tags_to_videos" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#2a8327"
+	 src-table="svh_video_schema.tags"
+	 dst-table="svh_video_schema.tags_to_videos"
+	 src-required="false" dst-required="false"/>
+
+<table name="categories" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="svh_video_schema"/>
+	<role name="svh"/>
+	<position x="1080" y="640"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="title" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="categories_pk" type="pk-constr" table="svh_video_schema.categories">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="categories_to_videos" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="svh_video_schema"/>
+	<role name="svh"/>
+	<position x="660" y="640"/>
+</table>
+
+<relationship name="videos_has_many_categories_to_videos" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#da0c5b"
+	 src-table="svh_video_schema.videos"
+	 dst-table="svh_video_schema.categories_to_videos"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="categories_has_many_categories_to_videos" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#97da96"
+	 src-table="svh_video_schema.categories"
+	 dst-table="svh_video_schema.categories_to_videos"
+	 src-required="false" dst-required="false"/>
+
+<usertype name="video_type" configuration="composite">
+	<schema name="svh_video_schema"/>
+	<typeattrib name="id">
+		<type name="bigint" length="0"/>
+	</typeattrib>
+	<typeattrib name="created_at">
+		<type name="timestamptz" length="0"/>
+	</typeattrib>
+	<typeattrib name="owner">
+		<type name="uuid" length="0"/>
+	</typeattrib>
+	<typeattrib name="title">
+		<type name="text" length="0"/>
+	</typeattrib>
+	<typeattrib name="descrpt">
+		<type name="text" length="0"/>
+	</typeattrib>
+	<typeattrib name="age_rating">
+		<type name="text" length="0"/>
+	</typeattrib>
+</usertype>
+
+<usertype name="video_tag_type" configuration="composite">
+	<schema name="svh_video_schema"/>
+	<typeattrib name="video_id">
+		<type name="bigint" length="0"/>
+	</typeattrib>
+	<typeattrib name="tag_id">
+		<type name="bigint" length="0"/>
+	</typeattrib>
+</usertype>
+
+</dbmodel>
