@@ -34,22 +34,27 @@ add_library(${PROJECT_NAME}_http_components OBJECT
     src/components/http/post/upload/fwd.hpp
 
     # auload access
-    src/components/http/get/upload/UploadAccessor.hpp
-    src/components/http/get/upload/UploadAccessor.cpp
-    src/components/http/get/upload/fwd.hpp
+    src/components/http/post/access/UploadAccessor.hpp
+    src/components/http/post/access/UploadAccessor.cpp
+    src/components/http/post/access/fwd.hpp
 
     # stream
     src/components/http/get/stream/StreamHandler.hpp
     src/components/http/get/stream/StreamHandler.cpp
     src/components/http/get/stream/fwd.hpp
 
+    # videos
+    src/components/http/get/videos/VideosTakeHandler.hpp
+    src/components/http/get/videos/VideosTakeHandler.cpp
+    src/components/http/get/videos/fwd.hpp
+
     # options
     src/components/http/options/OptionsHandler.hpp
     src/components/http/options/OptionsHandler.cpp
     src/components/http/options/fwd.hpp
 
-
-)
+    
+) 
 target_link_libraries(${PROJECT_NAME}_http_components PUBLIC userver::postgresql)
 target_include_directories(${PROJECT_NAME}_http_components PRIVATE src/logic/upload)
 target_include_directories(${PROJECT_NAME}_http_components PRIVATE src/components/upload)

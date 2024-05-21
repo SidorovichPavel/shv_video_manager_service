@@ -10,9 +10,10 @@
 #include <userver/utils/daemon_run.hpp>
 
 #include "components/convert/fwd.hpp"
+#include "components/http/get//videos/fwd.hpp"
 #include "components/http/get/stream/fwd.hpp"
-#include "components/http/get/upload/fwd.hpp"
 #include "components/http/options/fwd.hpp"
+#include "components/http/post/access/fwd.hpp"
 #include "components/http/post/upload/fwd.hpp"
 #include "components/upload/fwd.hpp"
 
@@ -27,15 +28,16 @@ int main(int argc, char* argv[]) {
                             .Append<userver::components::ProcessStarter>()
                             .Append<userver::clients::dns::Component>();
 
-  component_list.Append<userver::components::FsCache>("stream-fs-cache");
+  // component_list.Append<userver::components::FsCache>("stream-fs-cache");
   component_list.Append<userver::components::Postgres>("svh_video_service_db");
 
   svh::video::components::http::options::Append(component_list);
   svh::video::components::http::post::upload::Append(component_list);
-  svh::video::components::http::get::upload::Append(component_list);
+  svh::video::components::http::post::access::Append(component_list);
   svh::video::components::upload::Append(component_list);
   svh::video::components::convert::Append(component_list);
   svh::video::components::http::get::stream::Append(component_list);
+  svh::video::components::http::get::videos::Append(component_list);
 
   return userver::utils::DaemonMain(argc, argv, component_list);
 }

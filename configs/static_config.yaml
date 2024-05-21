@@ -85,8 +85,14 @@ components_manager:
             response-body-stream: true
             task_processor: main-task-processor
 
-        stream-fs-cache:
-            dir: /tmp/streams/
+        videos-take-handler:
+            path: /api/videos
+            method: GET
+            task_processor: main-task-processor
+
+        #stream-fs-cache:
+        #    dir: /home/rayes/streams
+        #    update-period: 30000
 
         svh_video_service_db:
             dbconnection: $dbconnection
