@@ -5,7 +5,7 @@
 #include <userver/server/handlers/http_handler_json_base.hpp>
 #include <userver/storages/postgres/cluster.hpp>
 
-namespace svh::video::components::http::get::upload {
+namespace svh::video::components::http::post::access {
 
 class UploadAccessor final
     : public userver::server::handlers::HttpHandlerJsonBase {
