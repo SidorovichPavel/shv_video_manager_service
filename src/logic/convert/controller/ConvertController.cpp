@@ -11,17 +11,6 @@ std::unique_ptr<impl::ConvertConfig> ConfigBuilder::Make() {
   return std::move(config_);
 }
 
-ConfigBuilder& ConfigBuilder::SetVideoCodec(std::string_view video_codec) {
-  config_->set_video_codec(video_codec);
-  return *this;
-}
-
-ConfigBuilder& ConfigBuilder::SetVideoCodecPreset(
-    std::string_view video_codec_preset) {
-  config_->set_video_codec_preset(video_codec_preset);
-  return *this;
-}
-
 ConvertController::ConvertController(
     userver::engine::TaskProcessor& task_processor,
     userver::engine::subprocess::ProcessStarter& process_starter,

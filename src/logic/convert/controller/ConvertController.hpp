@@ -20,8 +20,6 @@ class ConfigBuilder {
  public:
   ConfigBuilder();
   std::unique_ptr<impl::ConvertConfig> Make();
-  ConfigBuilder& SetVideoCodec(std::string_view video_codec);
-  ConfigBuilder& SetVideoCodecPreset(std::string_view video_codec_preset);
 
  private:
   std::unique_ptr<impl::ConvertConfig> config_;
