@@ -18,7 +18,7 @@ namespace svh::video::logic::convert::controller::impl {
 
 class ConvertControllerImpl {
  public:
-  constexpr static std::string_view default_work_dir = "/tmp/streams";
+  constexpr static std::string_view default_work_dir = "/home/rayes/streams";
 
   ConvertControllerImpl(userver::engine::TaskProcessor&,
                         userver::engine::subprocess::ProcessStarter&,
