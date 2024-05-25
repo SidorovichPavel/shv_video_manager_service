@@ -1,7 +1,11 @@
+#pragma once
+
+#include <cstdint>
 #include <string_view>
 
 #include <userver/components/component.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
+#include <userver/server/handlers/http_handler_json_base.hpp>
 
 #include <controller/UploadController.hpp>
 
@@ -21,9 +25,11 @@ class UploadHandler final : public userver::server::handlers::HttpHandlerBase {
  private:
   void EnableCORS(const userver::server::http::HttpRequest& request) const;
 
-  std::string MakeBadRequestValue(
-      const userver::server::http::HttpRequest& request,
-      std::string message) const;
+  std::size_t GetTotalChunks(
+      const userver::server::http::HttpRequest& request) const;
+  std::size_t GetChunkNumber(
+      const userver::server::http::HttpRequest& request) const;
+  std::size_t StrToSizeT(std::string_view arg) const;
 
   std::shared_ptr<logic::upload::controller::UploadController>
       upload_controller_;
