@@ -24,6 +24,7 @@ DashConvertComponent::DashConvertComponent(
                                  .GetUploadControllerPtr()) {
   upload_controller_ptr_->upload_callback(
       [this](std::string path, std::string filename) {
+        LOG_DEBUG() << "File add to convert";
         convert_controller_ptr_->enqueue(std::move(path), std::move(filename));
       });
 }
