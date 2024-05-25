@@ -19,7 +19,7 @@ class UploadControllerImpl {
 
   ~UploadControllerImpl();
 
-  void push_block(std::string uid, std::string file_name,
+  void push_block(std::string uid,
                   std::size_t total_blocks_number, std::size_t block_idx,
                   std::string_view value);
 
@@ -32,7 +32,6 @@ class UploadControllerImpl {
   constexpr static std::string_view gc_task_name = "gc-task-name";
 
   userver::engine::TaskWithResult<void> async_push(std::string uid,
-                                                   std::string file_name,
                                                    std::size_t total_blocks,
                                                    std::size_t block_idx,
                                                    std::string_view value);
@@ -40,7 +39,6 @@ class UploadControllerImpl {
   void gc_task();
 
   ExpirationFileBuilder* get_file_builder(std::string uid,
-                                          std::string file_name,
                                           std::size_t total_blocks);
 
   void delete_file_builder(std::string uid);
@@ -52,6 +50,6 @@ class UploadControllerImpl {
   userver::engine::TaskProcessor& fs_task_processor_;
   userver::utils::PeriodicTask gc_task_;
 
-  std::function<void(std::string, std::string)> callback_;
+  std::function<void(std::string, std::string)> on_constructed_callback_;
 };
 }  // namespace svh::video::logic::upload::controller::impl

@@ -16,16 +16,15 @@ UploadControllerImpl::UploadControllerImpl(
 
 UploadControllerImpl::~UploadControllerImpl() { gc_task_.Stop(); }
 
-void UploadControllerImpl::push_block(std::string uid, std::string file_name,
-                                      std::size_t total_blocks,
+void UploadControllerImpl::push_block(std::string uid, std::size_t total_blocks,
                                       std::size_t block_idx,
                                       std::string_view value) {
-  async_push(uid, file_name, total_blocks, block_idx, value).Get();
+  async_push(uid, total_blocks, block_idx, value).Get();
 }
 
 void UploadControllerImpl::upload_callback(
     std::function<void(std::string, std::string)> callback) {
-  callback_ = callback;
+  on_constructed_callback_ = callback;
 }
 
 void UploadControllerImpl::gc_task() {
@@ -33,14 +32,14 @@ void UploadControllerImpl::gc_task() {
 }
 
 userver::engine::TaskWithResult<void> UploadControllerImpl::async_push(
-    std::string uid, std::string file_name, std::size_t total_blocks,
-    std::size_t block_idx, std::string_view value) {
+    std::string uid, std::size_t total_blocks, std::size_t block_idx,
+    std::string_view value) {
   const std::string task_name("fs-blocking-write-task");
   return userver::utils::Async(
       fs_task_processor_, task_name,
-      [this](std::string uid, std::string file_name, std::size_t total_blocks,
-             std::size_t block_idx, std::string_view value) {
-        auto builder = get_file_builder(uid, file_name, total_blocks);
+      [this](std::string uid, std::size_t total_blocks, std::size_t block_idx,
+             std::string_view value) {
+        auto builder = get_file_builder(uid, total_blocks);
 
         builder->push_block(block_idx, value);
 
@@ -49,20 +48,21 @@ userver::engine::TaskWithResult<void> UploadControllerImpl::async_push(
         if (builder->is_ready()) {
           builder->build();
           delete_file_builder(uid);
-          callback_(builder::k_default_build_dir, uid);
+          if (on_constructed_callback_)
+            on_constructed_callback_(builder::k_default_build_dir, uid);
         }
       },
-      uid, file_name, total_blocks, block_idx, value);
+      uid, total_blocks, block_idx, value);
 }
 
 ExpirationFileBuilder* UploadControllerImpl::get_file_builder(
-    std::string uid, std::string file_name, std::size_t total_blocks) {
+    std::string uid, std::size_t total_blocks) {
   /// TODO: fix locking time
 
   auto builders_lock = builders_.Lock();
   if ((*builders_lock)[uid] == nullptr)
     (*builders_lock)[uid] =
-        std::make_unique<ExpirationFileBuilder>(file_name, total_blocks);
+        std::make_unique<ExpirationFileBuilder>(uid, total_blocks);
 
   return (*builders_lock)[uid].get();
 }
