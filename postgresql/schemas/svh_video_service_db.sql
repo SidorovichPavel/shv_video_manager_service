@@ -130,8 +130,6 @@ CREATE TYPE svh_video_schema.video_type AS
  age_rating text
 );
 -- ddl-end --
-ALTER TYPE svh_video_schema.video_type OWNER TO svh;
--- ddl-end --
 
 -- object: svh_video_schema.video_tag_type | type: TYPE --
 -- DROP TYPE IF EXISTS svh_video_schema.video_tag_type CASCADE;
@@ -141,7 +139,41 @@ CREATE TYPE svh_video_schema.video_tag_type AS
  tag_id bigint
 );
 -- ddl-end --
-ALTER TYPE svh_video_schema.video_tag_type OWNER TO svh;
+
+-- object: svh_video_schema.visibility_modes | type: TABLE --
+-- DROP TABLE IF EXISTS svh_video_schema.visibility_modes CASCADE;
+CREATE TABLE svh_video_schema.visibility_modes (
+	id serial NOT NULL,
+	title text NOT NULL,
+	CONSTRAINT visibility_modes_pk PRIMARY KEY (id)
+);
+-- ddl-end --
+ALTER TABLE svh_video_schema.visibility_modes OWNER TO svh;
+-- ddl-end --
+
+-- object: svh_video_schema.visibility_modes_to_video | type: TABLE --
+-- DROP TABLE IF EXISTS svh_video_schema.visibility_modes_to_video CASCADE;
+CREATE TABLE svh_video_schema.visibility_modes_to_video (
+	id_videos bigint,
+	id_visibility_modes integer
+
+);
+-- ddl-end --
+ALTER TABLE svh_video_schema.visibility_modes_to_video OWNER TO svh;
+-- ddl-end --
+
+-- object: videos_fk | type: CONSTRAINT --
+-- ALTER TABLE svh_video_schema.visibility_modes_to_video DROP CONSTRAINT IF EXISTS videos_fk CASCADE;
+ALTER TABLE svh_video_schema.visibility_modes_to_video ADD CONSTRAINT videos_fk FOREIGN KEY (id_videos)
+REFERENCES svh_video_schema.videos (id) MATCH FULL
+ON DELETE SET NULL ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: visibility_modes_fk | type: CONSTRAINT --
+-- ALTER TABLE svh_video_schema.visibility_modes_to_video DROP CONSTRAINT IF EXISTS visibility_modes_fk CASCADE;
+ALTER TABLE svh_video_schema.visibility_modes_to_video ADD CONSTRAINT visibility_modes_fk FOREIGN KEY (id_visibility_modes)
+REFERENCES svh_video_schema.visibility_modes (id) MATCH FULL
+ON DELETE SET NULL ON UPDATE CASCADE;
 -- ddl-end --
 
 
