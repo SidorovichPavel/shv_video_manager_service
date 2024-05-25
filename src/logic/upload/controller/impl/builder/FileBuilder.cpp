@@ -8,7 +8,7 @@
 
 namespace svh::video::logic::upload::controller::impl::builder {
 
-const std::string k_default_build_dir = "/tmp";
+const std::string k_default_build_dir = "/home/rayes/parts";
 
 FileBuilder::FileBuilder(std::string file_name, std::size_t total_blocks_number,
                          std::string workspace_dir)
