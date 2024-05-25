@@ -17,9 +17,8 @@ class UploadController {
  public:
   UploadController(userver::engine::TaskProcessor& fs_task_processor);
 
-  void push_block(std::string uid, std::string file_name,
-                  std::size_t total_blocks_number, std::size_t block_idx,
-                  std::string_view value);
+  void push_block(std::string uid, std::size_t total_blocks_number,
+                  std::size_t block_idx, std::string_view value);
 
   UploadController(const UploadController&) = delete;
   UploadController(UploadController&&) = delete;
